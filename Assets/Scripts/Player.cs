@@ -37,6 +37,7 @@ public class Player : MonoBehaviour
   Rigidbody2D _rigidBody;
   Animator _animator;
   Collider2D _collider2d;
+  Collider2D feetCollider;
 
   List<Component> refs;
 
@@ -149,7 +150,7 @@ public class Player : MonoBehaviour
   private void DetectAirborne()
   {
     // If he's climbing or grounded, he isn't airborne
-    if (!IsTouching("Ground") && !climbing)
+    if (!IsTouching("Ground", withFeet: true) && !climbing)
     {
       // Detect y movement
       float yMovement = _rigidBody.velocity.y;
@@ -230,7 +231,7 @@ public class Player : MonoBehaviour
     frameJump = false;
 
     // Can only jump in these 2 conditions
-    if (!IsTouching("Ground") && !IsTouching("Climbable")) return;
+    if (!IsTouching("Ground", withFeet: true) && !IsTouching("Climbable")) return;
 
     if (jump)
     {
@@ -249,13 +250,16 @@ public class Player : MonoBehaviour
   }
 
   // Whether or not the player is currently touching the layer
-  bool IsTouching(String layer)
+  bool IsTouching(String layer, bool withFeet = false)
   {
     // Get layer
     LayerMask layerMask = LayerMask.GetMask(layer);
 
+    // Get which collider to use
+    Collider2D collider = withFeet ? feetCollider : _collider2d;
+
     // See if player is touching it
-    return _collider2d.IsTouchingLayers(layerMask);
+    return collider.IsTouchingLayers(layerMask);
   }
 
   // Applies horizontal movement to the body
@@ -291,6 +295,7 @@ public class Player : MonoBehaviour
     _rigidBody = GetComponent<Rigidbody2D>();
     _animator = GetComponent<Animator>();
     _collider2d = GetComponent<Collider2D>();
+    feetCollider = transform.Find("Feet").GetComponent<Collider2D>();
 
     // Report dependencies
     if (_rigidBody == null)
@@ -304,6 +309,10 @@ public class Player : MonoBehaviour
     if (_collider2d == null)
     {
       Debug.LogError(gameObject.name + " is missing " + _collider2d.GetType().Name + " component");
+    }
+    if (feetCollider == null)
+    {
+      Debug.LogError(gameObject.name + " is missing Feet child with rigidbody2D component");
     }
   }
 }
