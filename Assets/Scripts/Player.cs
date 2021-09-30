@@ -1,4 +1,5 @@
 using System;
+using Diagnostics = System.Diagnostics;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,10 @@ public class Player : MonoBehaviour
   [SerializeField] float moveSpeed = 3f;
   [SerializeField] float jumpSpeed = 15f;
   [SerializeField] float climbSpeed = 3f;
+  [Tooltip("How much time can pass between the two key presses of a dash, in milliseconds")]
+  [SerializeField] int dashTolerance = 500;
+  [Tooltip("How much the walking speed gets multiplied by when player is dashing")]
+  [SerializeField] float dashSpeedMultiplier = 2f;
 
   // How much movement was applied in the current frame
   float frameMovement;
@@ -21,6 +26,9 @@ public class Player : MonoBehaviour
 
   // Whether the player is in climbing state
   bool climbing;
+
+  // Whether the player is sprinting
+  bool sprinting;
 
   // The initial gravity scale
   float gravityScale;
@@ -44,14 +52,22 @@ public class Player : MonoBehaviour
   // Update is called once per frame
   void Update()
   {
-    // Get the frame's movement
-    frameMovement = Input.GetAxis("Horizontal") * moveSpeed;
+    DetectMovement();
 
     // Keep frameJump if it's already set to true
     frameJump = frameJump || Input.GetButtonDown("Jump");
 
     // Detect climbing
     frameClimb = Input.GetAxis("Vertical") * climbSpeed;
+  }
+
+  private void DetectMovement()
+  {
+    // Get the frame's movement
+    frameMovement = Input.GetAxis("Horizontal") * moveSpeed;
+
+    // Detect double click (dash)
+    HandleDash();
   }
 
   private void FixedUpdate()
@@ -66,6 +82,68 @@ public class Player : MonoBehaviour
 
     // Flip sprite
     FlipSprite();
+  }
+
+  // Checks if the player has pressed the same move kew twice in a quick succession to perform a dash
+  private void HandleDash()
+  {
+    // If stopped moving, make sure sprinting turns false
+    bool isMoving = Mathf.Abs(frameMovement) > Mathf.Epsilon;
+    if (!isMoving)
+    {
+      ToggleSprinting(false);
+      return;
+    }
+
+    // If already sprinting, apply bonus speed
+    if (sprinting)
+    {
+      frameMovement *= dashSpeedMultiplier;
+      return;
+    }
+
+    // Check if a movement key was pressed in this frame. If not, do nothing
+    if (!Input.GetButtonDown("Horizontal")) return;
+
+    // Detect direction
+    int direction = (int)Mathf.Sign(Input.GetAxisRaw("Horizontal"));
+
+    // Start a coroutine that will wait for the double tap for some time
+    StartCoroutine(DetectDoubleKey(direction));
+  }
+
+  private void ToggleSprinting(bool value)
+  {
+    sprinting = value;
+    _animator.SetBool("Sprinting", value);
+  }
+
+  IEnumerator DetectDoubleKey(int direction)
+  {
+    // Start counting live time
+    Diagnostics.Stopwatch liveTimeCounter = Diagnostics.Stopwatch.StartNew();
+
+    // Keep waiting
+    while (true)
+    {
+      // Wait next frame
+      yield return null;
+
+      // Check for the double tap
+      if (Input.GetButtonDown("Horizontal"))
+      {
+        int doubleDirection = (int)Mathf.Sign(Input.GetAxisRaw("Horizontal"));
+
+        // Check if directions match
+        if (direction == doubleDirection) ToggleSprinting(true);
+
+        // Stop coroutine after second tap
+        yield break;
+      }
+
+      // Check live time. If timer is due has passed, die
+      if (liveTimeCounter.ElapsedMilliseconds > dashTolerance) yield break;
+    }
   }
 
   private void DetectAirborne()
