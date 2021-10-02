@@ -34,7 +34,7 @@ public class Player : MonoBehaviour
   float gravityScale;
 
   // Refs
-  Rigidbody2D _rigidBody;
+  Rigidbody2D _rigidbody;
   Animator _animator;
   Collider2D _collider2d;
   Collider2D feetCollider;
@@ -47,7 +47,7 @@ public class Player : MonoBehaviour
     GetComponentRefs();
 
     // Store gravity scale
-    gravityScale = _rigidBody.gravityScale;
+    gravityScale = _rigidbody.gravityScale;
   }
 
   // Update is called once per frame
@@ -153,7 +153,7 @@ public class Player : MonoBehaviour
     if (!IsTouching("Ground", withFeet: true) && !climbing)
     {
       // Detect y movement
-      float yMovement = _rigidBody.velocity.y;
+      float yMovement = _rigidbody.velocity.y;
 
       // Detect rising
       if (yMovement > Mathf.Epsilon)
@@ -189,10 +189,10 @@ public class Player : MonoBehaviour
       climbing = true;
 
       // Apply movement to body
-      _rigidBody.velocity = new Vector2(0, frameClimb);
+      _rigidbody.velocity = new Vector2(0, frameClimb);
 
       // Disable gravity
-      _rigidBody.gravityScale = 0f;
+      _rigidbody.gravityScale = 0f;
 
       // Update animation
       _animator.SetBool("Climbing", true);
@@ -204,7 +204,7 @@ public class Player : MonoBehaviour
     else if (climbing)
     {
       // Freeze y movement
-      _rigidBody.velocity = new Vector2(0, 0);
+      _rigidbody.velocity = new Vector2(0, 0);
 
       // Freeze animation
       _animator.SetFloat("ClimbingSpeedMultiplier", 0f);
@@ -220,7 +220,7 @@ public class Player : MonoBehaviour
     _animator.SetFloat("ClimbingSpeedMultiplier", 0f);
 
     // Reset gravity
-    _rigidBody.gravityScale = gravityScale;
+    _rigidbody.gravityScale = gravityScale;
   }
 
   // Starts jump animation
@@ -243,7 +243,7 @@ public class Player : MonoBehaviour
   // Actually performs the jump
   public void Jump()
   {
-    _rigidBody.velocity = new Vector2(_rigidBody.velocity.x, jumpSpeed);
+    _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, jumpSpeed);
 
     // If climbing, stop climbing
     if (climbing) StopClimbing();
@@ -273,14 +273,14 @@ public class Player : MonoBehaviour
     if (climbing) return;
 
     // Apply movement to body
-    _rigidBody.velocity = new Vector2(frameMovement, _rigidBody.velocity.y);
+    _rigidbody.velocity = new Vector2(frameMovement, _rigidbody.velocity.y);
   }
 
   // Flips sprite x scale based on horizontal movement
   void FlipSprite()
   {
     // Checks for h. movement
-    float movement = _rigidBody.velocity.x;
+    float movement = _rigidbody.velocity.x;
 
     if (Mathf.Abs(movement) > Mathf.Epsilon)
     {
@@ -292,15 +292,15 @@ public class Player : MonoBehaviour
   private void GetComponentRefs()
   {
     // Get refs
-    _rigidBody = GetComponent<Rigidbody2D>();
+    _rigidbody = GetComponent<Rigidbody2D>();
     _animator = GetComponent<Animator>();
     _collider2d = GetComponent<Collider2D>();
     feetCollider = transform.Find("Feet").GetComponent<Collider2D>();
 
     // Report dependencies
-    if (_rigidBody == null)
+    if (_rigidbody == null)
     {
-      Debug.LogError(gameObject.name + " is missing " + _rigidBody.GetType().Name + " component");
+      Debug.LogError(gameObject.name + " is missing " + _rigidbody.GetType().Name + " component");
     }
     if (_animator == null)
     {
