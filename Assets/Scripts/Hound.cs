@@ -2,13 +2,23 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Hound : MonoBehaviour
 {
   // Params
   [SerializeField] float runSpeed = 5f;
 
+  [Header("Movement variables")]
+  [SerializeField] float moveDurationMin = 0.5f;
+  [SerializeField] float moveDurationMax = 2f;
+  [SerializeField] float idleDurationMin = 1f;
+  [SerializeField] float idleDurationMax = 5f;
+
   // State
+
+  // Whether it's moving or idle
+  bool moving = false;
 
   // Which direction the hound is facing (starts to the left)
   int direction = -1;
@@ -26,6 +36,9 @@ public class Hound : MonoBehaviour
   void Start()
   {
     GetComponentRefs();
+
+    // Decide random movements
+    StartCoroutine(DecideMovement());
   }
 
   private void Update()
@@ -36,6 +49,32 @@ public class Hound : MonoBehaviour
   private void FixedUpdate()
   {
     Move();
+  }
+
+  // Decides when to randomly move
+  private IEnumerator DecideMovement()
+  {
+    // Never stop
+    while (true)
+    {
+      // Decide when to change state
+      float min = moving ? moveDurationMin : idleDurationMin;
+      float max = moving ? moveDurationMax : idleDurationMax;
+
+      float stateChangeTimeout = Random.Range(min, max);
+
+      // Wait this time
+      yield return new WaitForSeconds(stateChangeTimeout);
+
+      // Change state
+      moving = !moving;
+
+      // Randomly switch direction
+      if (moving && Random.value < 0.5f) FlipDirection();
+
+      // Update animation
+      _animator.SetBool("Running", moving);
+    }
   }
 
   void FlipDirection()
@@ -69,14 +108,11 @@ public class Hound : MonoBehaviour
 
   private void Move()
   {
+    // Get frame movement
+    float movement = moving ? runSpeed * direction : 0f;
+
     // Apply movement
-    _rigidbody.velocity = new Vector2(runSpeed * direction, _rigidbody.velocity.y);
-
-    bool moving = Mathf.Abs(_rigidbody.velocity.x) > Mathf.Epsilon;
-
-    if (moving) _animator.SetBool("Running", true);
-    else _animator.SetBool("Running", false);
-
+    _rigidbody.velocity = new Vector2(movement, _rigidbody.velocity.y);
   }
 
   private void GetComponentRefs()
