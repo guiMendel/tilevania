@@ -7,13 +7,23 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
   // State
+  [Header("Movement Speed")]
   [SerializeField] float moveSpeed = 3f;
   [SerializeField] float jumpSpeed = 15f;
   [SerializeField] float climbSpeed = 3f;
+  [Tooltip("How much control the player has over x movement when airborne")]
+  [Range(0f, 1f)] [SerializeField] float airControl = 0.1f;
+
+  [Header("Dash Parameters")]
   [Tooltip("How much time can pass between the two key presses of a dash, in milliseconds")]
   [SerializeField] int dashTolerance = 500;
   [Tooltip("How much the walking speed gets multiplied by when player is dashing")]
   [SerializeField] float dashSpeedMultiplier = 2f;
+
+  [Header("Damage Parameters")]
+  [Tooltip("The velocity at which the player is launched when touching an enemy")]
+  [SerializeField] Vector2 launchVelocity;
+
 
   // How much movement was applied in the current frame
   float frameMovement;
@@ -32,6 +42,9 @@ public class Player : MonoBehaviour
 
   // The initial gravity scale
   float gravityScale;
+
+  // Whether player is dead
+  bool isDead;
 
   // Refs
   Rigidbody2D _rigidbody;
@@ -55,11 +68,36 @@ public class Player : MonoBehaviour
   {
     DetectMovement();
 
+    if (isDead) return;
+
     // Keep frameJump if it's already set to true
     frameJump = frameJump || Input.GetButtonDown("Jump");
 
     // Detect climbing
     frameClimb = Input.GetAxis("Vertical") * climbSpeed;
+  }
+
+  private void FixedUpdate()
+  {
+    // Detect if player is rising in the air / falling
+    DetectAirborne();
+
+    // Apply frame's movement
+    Move();
+    StartJump();
+    Climb();
+
+    // Flip sprite
+    FlipSprite();
+  }
+
+  private void OnCollisionEnter2D(Collision2D other)
+  {
+    // Check if other is an enemy
+    if (LayerMask.NameToLayer("Enemy") == other.gameObject.layer)
+    {
+      TakeDamageFrom(other);
+    }
   }
 
   private void DetectMovement()
@@ -71,18 +109,25 @@ public class Player : MonoBehaviour
     HandleDash();
   }
 
-  private void FixedUpdate()
+  private void TakeDamageFrom(Collision2D other)
   {
-    // Apply frame's movement
-    Move();
-    StartJump();
-    Climb();
+    // Get direction of launch
+    float launchDirection = Mathf.Sign(transform.position.x - other.transform.position.x);
 
-    // Detect if player is rising in the air / falling
-    DetectAirborne();
+    Vector2 directedLaunchVelocity = new Vector2(launchVelocity.x * launchDirection, launchVelocity.y);
 
-    // Flip sprite
-    FlipSprite();
+    // Apply velocity
+    _rigidbody.velocity += directedLaunchVelocity;
+
+    // Die
+    climbing = false;
+    moveSpeed = 0f;
+    isDead = true;
+
+    _animator.SetBool("Dead", true);
+    _animator.SetBool("Walking", false);
+    _animator.SetBool("Sprinting", false);
+    _animator.SetBool("Climbing", false);
   }
 
   // Checks if the player has pressed the same move kew twice in a quick succession to perform a dash
@@ -272,8 +317,13 @@ public class Player : MonoBehaviour
     // Forbid moving while climbing
     if (climbing) return;
 
+    // Get x velocity (if not grounded, apply airControl)
+    float xVelocity = IsTouching("Ground", withFeet: true) && CloseToZero(_rigidbody.velocity.y, 2f) && !isDead
+    ? frameMovement
+    : airControl * frameMovement + (1f - airControl) * _rigidbody.velocity.x;
+
     // Apply movement to body
-    _rigidbody.velocity = new Vector2(frameMovement, _rigidbody.velocity.y);
+    _rigidbody.velocity = new Vector2(xVelocity, _rigidbody.velocity.y);
   }
 
   // Flips sprite x scale based on horizontal movement
@@ -282,12 +332,14 @@ public class Player : MonoBehaviour
     // Checks for h. movement
     float movement = _rigidbody.velocity.x;
 
-    if (Mathf.Abs(movement) > Mathf.Epsilon)
+    if (Mathf.Abs(movement) > 1f)
     {
       // Flip sprite
       transform.localScale = new Vector2(Mathf.Sign(movement), 1f);
     }
   }
+
+  bool CloseToZero(float value, float tolerance = 0) => (Mathf.Abs(value) <= (tolerance != 0 ? tolerance : Mathf.Epsilon));
 
   private void GetComponentRefs()
   {

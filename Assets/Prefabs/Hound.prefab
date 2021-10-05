@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1135258336}
   - component: {fileID: 1135258338}
   - component: {fileID: 1135258337}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Wall Sensor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -82,7 +82,7 @@ GameObject:
   - component: {fileID: 2057955397}
   - component: {fileID: 2057955399}
   - component: {fileID: 2057955398}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Ground Sensor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -156,7 +156,7 @@ GameObject:
   - component: {fileID: 8428335305099256054}
   - component: {fileID: 8428335305099256053}
   - component: {fileID: 8428335305099256052}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Hound
   m_TagString: Untagged
   m_Icon: {fileID: 0}

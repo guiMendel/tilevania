@@ -216,5 +216,7 @@ MonoBehaviour:
   moveSpeed: 3
   jumpSpeed: 14
   climbSpeed: 3
+  airControl: 0.15
   dashTolerance: 500
   dashSpeedMultiplier: 2
+  launchVelocity: {x: 15, y: 10}
