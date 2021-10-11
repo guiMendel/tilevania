@@ -23,6 +23,8 @@ public class Player : MonoBehaviour
   [Header("Damage Parameters")]
   [Tooltip("The velocity at which the player is launched when touching an enemy")]
   [SerializeField] Vector2 launchVelocity;
+  [Tooltip("When the Die method is called with the slowFall parameter, this is the gravity applied to the fall")]
+  [SerializeField] float deathSlowFallGravityScale = 0.05f;
 
 
   // How much movement was applied in the current frame
@@ -91,12 +93,25 @@ public class Player : MonoBehaviour
     FlipSprite();
   }
 
+  private void OnTriggerEnter2D(Collider2D other)
+  {
+    // Check if other is a hazard
+    if (LayerMask.NameToLayer("Hazard") == other.gameObject.layer)
+    {
+      // Slow down character's fall
+      Die(slowFall: true);
+      return;
+    }
+
+  }
+
   private void OnCollisionEnter2D(Collision2D other)
   {
     // Check if other is an enemy
     if (LayerMask.NameToLayer("Enemy") == other.gameObject.layer)
     {
       TakeDamageFrom(other);
+      return;
     }
   }
 
@@ -120,6 +135,11 @@ public class Player : MonoBehaviour
     _rigidbody.velocity += directedLaunchVelocity;
 
     // Die
+    Die();
+  }
+
+  private void Die(bool slowFall = false)
+  {
     climbing = false;
     moveSpeed = 0f;
     isDead = true;
@@ -128,6 +148,18 @@ public class Player : MonoBehaviour
     _animator.SetBool("Walking", false);
     _animator.SetBool("Sprinting", false);
     _animator.SetBool("Climbing", false);
+
+    // Trigger slow fall
+    if (!slowFall) return;
+
+    // Reduce y velocity
+    _rigidbody.velocity = new Vector2(
+      _rigidbody.velocity.x,
+      _rigidbody.velocity.y * 0.2f
+    );
+
+    // Reduce gravity
+    _rigidbody.gravityScale = deathSlowFallGravityScale;
   }
 
   // Checks if the player has pressed the same move kew twice in a quick succession to perform a dash
@@ -194,28 +226,29 @@ public class Player : MonoBehaviour
 
   private void DetectAirborne()
   {
-    // If he's climbing or grounded, he isn't airborne
-    if (!IsTouching("Ground", withFeet: true) && !climbing)
+    // If he's climbing, grounded, or impaled in a hazard, he isn't airborne
+    if (IsTouching("Ground", withFeet: true) || climbing || IsTouching("Hazard"))
     {
-      // Detect y movement
-      float yMovement = _rigidbody.velocity.y;
-
-      // Detect rising
-      if (yMovement > Mathf.Epsilon)
-      {
-        _animator.SetInteger("AirborneDirection", 1);
-        return;
-      }
-      // Detect falling
-      else if (yMovement < -Mathf.Epsilon)
-      {
-        _animator.SetInteger("AirborneDirection", -1);
-        return;
-      }
+      // Not airborne
+      _animator.SetInteger("AirborneDirection", 0);
+      return;
     }
 
-    // Not airborne
-    _animator.SetInteger("AirborneDirection", 0);
+    // Detect y movement
+    float yMovement = _rigidbody.velocity.y;
+
+    // Detect rising
+    if (yMovement > Mathf.Epsilon)
+    {
+      _animator.SetInteger("AirborneDirection", 1);
+      return;
+    }
+    // Detect falling
+    else if (yMovement < -Mathf.Epsilon)
+    {
+      _animator.SetInteger("AirborneDirection", -1);
+      return;
+    }
   }
 
   private void Climb()

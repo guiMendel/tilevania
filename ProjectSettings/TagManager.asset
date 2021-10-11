@@ -47,9 +47,9 @@ TagManager:
   - name: Foreground
     uniqueID: 1164279781
     locked: 0
-  - name: Player
-    uniqueID: 1263362583
-    locked: 0
   - name: Hazard
     uniqueID: 1570888367
+    locked: 0
+  - name: Player
+    uniqueID: 1263362583
     locked: 0
