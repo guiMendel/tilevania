@@ -26,6 +26,10 @@ public class Player : MonoBehaviour
   [Tooltip("When the Die method is called with the slowFall parameter, this is the gravity applied to the fall")]
   [SerializeField] float deathSlowFallGravityScale = 0.05f;
 
+  [Header("Debug")]
+  [Tooltip("Makes player invulnerable")]
+  [SerializeField] bool godMode = false;
+
 
   // How much movement was applied in the current frame
   float frameMovement;
@@ -126,6 +130,8 @@ public class Player : MonoBehaviour
 
   private void TakeDamageFrom(Collision2D other)
   {
+    if (godMode) return;
+
     // Get direction of launch
     float launchDirection = Mathf.Sign(transform.position.x - other.transform.position.x);
 
@@ -140,6 +146,8 @@ public class Player : MonoBehaviour
 
   private void Die(bool slowFall = false)
   {
+    if (godMode) return;
+
     climbing = false;
     moveSpeed = 0f;
     isDead = true;

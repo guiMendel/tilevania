@@ -33096,10 +33096,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1794794356, guid: 4408e8035af22437eba268101ddb8b04, type: 3}
-      propertyPath: deathSlowFallGravityScale
-      value: 0.05
-      objectReference: {fileID: 0}
     - target: {fileID: 862832527107834563, guid: 4408e8035af22437eba268101ddb8b04, type: 3}
       propertyPath: m_Name
       value: Player
@@ -33157,14 +33153,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 6810722530499758235, guid: b0b8eb2accedd4cdea847c2b102f6da0, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -21.135002
-      objectReference: {fileID: 0}
-    - target: {fileID: 6810722530499758235, guid: b0b8eb2accedd4cdea847c2b102f6da0, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.8019748
-      objectReference: {fileID: 0}
     - target: {fileID: 6810722531010958623, guid: b0b8eb2accedd4cdea847c2b102f6da0, type: 3}
       propertyPath: m_AnimatedTarget
       value: 
@@ -33225,26 +33213,10 @@ PrefabInstance:
       propertyPath: m_BoundingShape2D
       value: 
       objectReference: {fileID: 999609690}
-    - target: {fileID: 6810722531827183769, guid: b0b8eb2accedd4cdea847c2b102f6da0, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -24.05307
-      objectReference: {fileID: 0}
-    - target: {fileID: 6810722531827183769, guid: b0b8eb2accedd4cdea847c2b102f6da0, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -1.1144495
-      objectReference: {fileID: 0}
     - target: {fileID: 6810722531827183775, guid: b0b8eb2accedd4cdea847c2b102f6da0, type: 3}
       propertyPath: m_Follow
       value: 
       objectReference: {fileID: 1241850475}
-    - target: {fileID: 6810722531854940608, guid: b0b8eb2accedd4cdea847c2b102f6da0, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -24.05307
-      objectReference: {fileID: 0}
-    - target: {fileID: 6810722531854940608, guid: b0b8eb2accedd4cdea847c2b102f6da0, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -1.0344496
-      objectReference: {fileID: 0}
     - target: {fileID: 6810722531854940614, guid: b0b8eb2accedd4cdea847c2b102f6da0, type: 3}
       propertyPath: m_BoundingShape2D
       value: 
