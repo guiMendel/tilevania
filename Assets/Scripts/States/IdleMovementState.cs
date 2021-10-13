@@ -7,20 +7,10 @@ using UnityEngine.Events;
 using UnityEngine.PlayerLoop;
 using Random = UnityEngine.Random;
 
-// que tal fazer uma classe abstrata State que ja implementa esse enable e disable e fornece o isCurrentState
+// TODO que tal fazer uma classe abstrata State que ja implementa esse enable e disable e fornece o isCurrentState
 
-// Deps
-[RequireComponent(typeof(SharedState))]
-
-public class IdleMovementState : MonoBehaviour
+public class IdleMovementState : State
 {
-  // Params
-  [Header("State management")]
-  [Tooltip("Whether this should be the starting state")]
-  [SerializeField] bool startingState;
-  [Tooltip("The state key used by this state")]
-  public string stateKey = "movement";
-
   [Header("Idle movement settings")]
   [SerializeField] float moveDurationMin = 0.5f;
   [SerializeField] float moveDurationMax = 2f;
@@ -37,32 +27,14 @@ public class IdleMovementState : MonoBehaviour
   // It's current movement
   float movement = 0f;
 
-  // If it's currently controlling the character
-  bool isCurrentState;
-
-  // Refs
-  SharedState _sharedState;
-
-  private void Awake()
+  protected override void OnAwake()
   {
-    // Get refs
-    _sharedState = GetComponent<SharedState>();
-
     // Set up events
     if (OnIdleMove == null) OnIdleMove = new FloatEvent();
   }
 
-  private void Start()
+  protected override void OnUpdate()
   {
-    // Initialize if starting state
-    if (startingState) Enable();
-  }
-
-  private void Update()
-  {
-    // Keep state awareness updated
-    isCurrentState = _sharedState.GetState(stateKey) == this.GetType().Name;
-
     // Emit move event
     if (isCurrentState) OnIdleMove.Invoke(movement);
   }
@@ -88,15 +60,6 @@ public class IdleMovementState : MonoBehaviour
     Disable();
   }
 
-  private void Disable()
-  {
-    // When done, ensure movement has stopped
-    movement = 0f;
-
-    // Erase movement
-    OnIdleMove.Invoke(movement);
-  }
-
   private void WanderNextIteration()
   {
     // Change movement
@@ -106,22 +69,30 @@ public class IdleMovementState : MonoBehaviour
     if (Random.value < 0.5f) FlipMovementDirection();
   }
 
-  // Interface
+  private void Disable()
+  {
+    // When done, ensure movement has stopped
+    movement = 0f;
+
+    // Erase movement
+    OnIdleMove.Invoke(movement);
+  }
 
   // Sets this as the current state and starts emitting events
-  public void Enable()
+  protected override void OnStateEnable()
   {
-    // Set state
-    _sharedState.SetState(stateKey, this.GetType().Name);
-    isCurrentState = true;
-
     // Start coroutine
     StartCoroutine(Wander());
   }
 
+  protected override string GetDefaultStateKeyName() => "movement";
+
+  // Interface
+
   // Switches movement direction
   public void FlipMovementDirection()
   {
+    print(42);
     movement = -movement;
   }
 }
