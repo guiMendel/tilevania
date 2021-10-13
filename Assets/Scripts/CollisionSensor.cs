@@ -30,7 +30,6 @@ public class CollisionSensor : MonoBehaviour
 
   private void Update()
   {
-    // foreach (Sensor sensor in sensors)
     for (int i = 0; i < sensors.Length; i++)
     {
       // Detect collision

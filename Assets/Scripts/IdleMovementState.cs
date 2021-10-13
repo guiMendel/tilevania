@@ -7,6 +7,8 @@ using UnityEngine.Events;
 using UnityEngine.PlayerLoop;
 using Random = UnityEngine.Random;
 
+// que tal fazer uma classe abstrata State que ja implementa esse enable e disable e fornece o isCurrentState
+
 // Deps
 [RequireComponent(typeof(SharedState))]
 
@@ -36,7 +38,7 @@ public class IdleMovementState : MonoBehaviour
   float movement = 0f;
 
   // If it's currently controlling the character
-  bool active;
+  bool isCurrentState;
 
   // Refs
   SharedState _sharedState;
@@ -58,15 +60,16 @@ public class IdleMovementState : MonoBehaviour
 
   private void Update()
   {
+    // Keep state awareness updated
+    isCurrentState = _sharedState.GetState(stateKey) == this.GetType().Name;
+
     // Emit move event
-    if (active) OnIdleMove.Invoke(movement);
+    if (isCurrentState) OnIdleMove.Invoke(movement);
   }
 
   private IEnumerator Wander()
   {
     // Loop until state changes
-    bool isCurrentState = _sharedState.GetState(stateKey) == this.GetType().Name;
-
     while (isCurrentState)
     {
       // Perform wandering action
@@ -80,9 +83,6 @@ public class IdleMovementState : MonoBehaviour
 
       // Wait this time
       yield return new WaitForSeconds(stateChangeTimeout);
-
-      // Check state condition
-      isCurrentState = _sharedState.GetState(stateKey) == this.GetType().Name;
     }
 
     Disable();
@@ -92,7 +92,6 @@ public class IdleMovementState : MonoBehaviour
   {
     // When done, ensure movement has stopped
     movement = 0f;
-    active = false;
 
     // Erase movement
     OnIdleMove.Invoke(movement);
@@ -114,7 +113,7 @@ public class IdleMovementState : MonoBehaviour
   {
     // Set state
     _sharedState.SetState(stateKey, this.GetType().Name);
-    active = true;
+    isCurrentState = true;
 
     // Start coroutine
     StartCoroutine(Wander());
