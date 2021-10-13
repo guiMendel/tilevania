@@ -11,6 +11,8 @@ public class GroundMovement : MonoBehaviour
   // Params
   [Tooltip("The base speed in which the character moves")]
   [SerializeField] float baseSpeed = 5f;
+  [Tooltip("Whether to invert the direction the character faces")]
+  [SerializeField] bool invertFacingDirection;
 
   // Refs
   Rigidbody2D _rigidbody;
@@ -20,6 +22,22 @@ public class GroundMovement : MonoBehaviour
   {
     // Get components
     GetComponentRefs();
+  }
+
+  private void Update()
+  {
+    UpdateFacingDirection();
+  }
+
+  private void UpdateFacingDirection()
+  {
+    // Ignore small movements
+    if (Mathf.Abs(_rigidbody.velocity.x) > 0.1f)
+    {
+      // Keep facing direction updated
+      float direction = invertFacingDirection ? -1 : 1;
+      transform.localScale = new Vector2(Mathf.Sign(_rigidbody.velocity.x) * direction, 1f);
+    }
   }
 
   private void GetComponentRefs()

@@ -9,7 +9,7 @@ public class SharedState : MonoBehaviour
   // Different components may consult and alter the state key's values.
   Dictionary<string, string> stateMap;
 
-  private void Start()
+  private void Awake()
   {
     stateMap = new Dictionary<string, string>();
   }

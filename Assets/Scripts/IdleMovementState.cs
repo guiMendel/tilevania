@@ -17,7 +17,7 @@ public class IdleMovementState : MonoBehaviour
   [Tooltip("Whether this should be the starting state")]
   [SerializeField] bool startingState;
   [Tooltip("The state key used by this state")]
-  [SerializeField] string stateKey = "movement";
+  public string stateKey = "movement";
 
   [Header("Idle movement settings")]
   [SerializeField] float moveDurationMin = 0.5f;
@@ -35,25 +35,31 @@ public class IdleMovementState : MonoBehaviour
   // It's current movement
   float movement = 0f;
 
+  // If it's currently controlling the character
+  bool active;
+
   // Refs
   SharedState _sharedState;
 
-  private void Start()
+  private void Awake()
   {
     // Get refs
     _sharedState = GetComponent<SharedState>();
 
     // Set up events
     if (OnIdleMove == null) OnIdleMove = new FloatEvent();
+  }
 
+  private void Start()
+  {
     // Initialize if starting state
     if (startingState) Enable();
   }
 
   private void Update()
   {
-    // Emit move event if moving
-    if (movement != 0f) OnIdleMove.Invoke(movement);
+    // Emit move event
+    if (active) OnIdleMove.Invoke(movement);
   }
 
   private IEnumerator Wander()
@@ -79,8 +85,17 @@ public class IdleMovementState : MonoBehaviour
       isCurrentState = _sharedState.GetState(stateKey) == this.GetType().Name;
     }
 
+    Disable();
+  }
+
+  private void Disable()
+  {
     // When done, ensure movement has stopped
     movement = 0f;
+    active = false;
+
+    // Erase movement
+    OnIdleMove.Invoke(movement);
   }
 
   private void WanderNextIteration()
@@ -89,7 +104,7 @@ public class IdleMovementState : MonoBehaviour
     movement = movement == 0f ? 1f : 0f;
 
     // Randomly switch direction
-    if (Random.value < 0.5f) movement = -movement;
+    if (Random.value < 0.5f) FlipMovementDirection();
   }
 
   // Interface
@@ -99,8 +114,15 @@ public class IdleMovementState : MonoBehaviour
   {
     // Set state
     _sharedState.SetState(stateKey, this.GetType().Name);
+    active = true;
 
     // Start coroutine
     StartCoroutine(Wander());
+  }
+
+  // Switches movement direction
+  public void FlipMovementDirection()
+  {
+    movement = -movement;
   }
 }
