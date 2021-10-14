@@ -31,25 +31,19 @@ public class GroundMovement : MonoBehaviour
     GetComponentRefs();
   }
 
-  private void Update()
-  {
-    UpdateFacingDirection();
-  }
-
   private void LateUpdate()
   {
     lastFrameMovement = frameMovement;
     frameMovement = 0f;
   }
 
-  private void UpdateFacingDirection()
+  private void UpdateFacingDirection(float movement)
   {
     // Ignore small movements
-    if (Mathf.Abs(_rigidbody.velocity.x) > 0.1f)
+    if (Mathf.Abs(movement) > 0.1f)
     {
       // Keep facing direction updated
-      float direction = invertFacingDirection ? -1 : 1;
-      transform.localScale = new Vector2(Mathf.Sign(_rigidbody.velocity.x) * direction, 1f);
+      SetFacingDirection(movement);
     }
   }
 
@@ -74,6 +68,9 @@ public class GroundMovement : MonoBehaviour
     // Apply it
     _rigidbody.velocity = new Vector2(movement, _rigidbody.velocity.y);
 
+    // Adjust move direction
+    UpdateFacingDirection(movement);
+
     // Record this movement
     frameMovement = movement;
   }
@@ -82,5 +79,12 @@ public class GroundMovement : MonoBehaviour
   public float GetLastFrameMovement()
   {
     return lastFrameMovement;
+  }
+
+  // Update facing direction
+  public void SetFacingDirection(float direction)
+  {
+    float directionModifier = invertFacingDirection ? -1 : 1;
+    transform.localScale = new Vector2(Mathf.Sign(direction) * directionModifier, 1f);
   }
 }

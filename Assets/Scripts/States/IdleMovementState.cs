@@ -21,6 +21,7 @@ public class IdleMovementState : State
   [Serializable] public class FloatEvent : UnityEvent<float> { }
   [Tooltip("Gets invoked each frame the character must move. Provides a movement modifier float")]
   public FloatEvent OnIdleMove;
+  public FloatEvent OnChangeDirection;
 
   // State
 
@@ -31,6 +32,7 @@ public class IdleMovementState : State
   {
     // Set up events
     if (OnIdleMove == null) OnIdleMove = new FloatEvent();
+    if (OnChangeDirection == null) OnChangeDirection = new FloatEvent();
   }
 
   protected override void OnUpdate()
@@ -92,7 +94,7 @@ public class IdleMovementState : State
   // Switches movement direction
   public void FlipMovementDirection()
   {
-    print(42);
     movement = -movement;
+    if (movement != 0) OnChangeDirection.Invoke(movement);
   }
 }
