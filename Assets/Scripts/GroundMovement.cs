@@ -6,7 +6,7 @@ using UnityEngine;
 // Component dependencies
 [RequireComponent(typeof(Rigidbody2D))]
 
-public class GroundMovement : MonoBehaviour
+public class GroundMovement : MonoBehaviour, MovementInterface
 {
   // Params
   [Tooltip("The base speed in which the character moves")]
@@ -61,7 +61,7 @@ public class GroundMovement : MonoBehaviour
   // Interface
 
   // Apply movement to character. The movementModifier param can alter the direction as well as the speed
-  public void Move(float movementModifier = 1f)
+  public void Move(float movementModifier)
   {
     float movement = baseSpeed * movementModifier;
 

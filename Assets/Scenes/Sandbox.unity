@@ -486,11 +486,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!61 &775578107 stripped
-BoxCollider2D:
-  m_CorrespondingSourceObject: {fileID: 1135258337, guid: a1b98571214174b43a6baff78099f94d, type: 3}
-  m_PrefabInstance: {fileID: 8428335306327653872}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &999609686
 GameObject:
   m_ObjectHideFlags: 0
@@ -20896,138 +20891,6 @@ TilemapCollider2D:
   m_Offset: {x: 0, y: 0}
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0.00001
---- !u!1 &2063874609 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8428335305099256051, guid: a1b98571214174b43a6baff78099f94d, type: 3}
-  m_PrefabInstance: {fileID: 8428335306327653872}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2063874616
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2063874609}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 230ddf123b0a64afa9089efc865be2dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startingState: 1
-  stateKey: movement
-  moveDurationMin: 0.5
-  moveDurationMax: 2
-  idleDurationMin: 1
-  idleDurationMax: 5
-  OnIdleMove:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2063874618}
-        m_TargetAssemblyTypeName: GroundMovement, Assembly-CSharp
-        m_MethodName: Move
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &2063874617
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2063874609}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0bef3d40d261c4fbdbf8d9fee43d8df3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2063874618
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2063874609}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61a1e27d78e014a70b8279bb40c2cf5b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseSpeed: 5
-  invertFacingDirection: 1
---- !u!114 &2063874619
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2063874609}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e250f070781874d1aa1f8f1552a1ce4f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sensors:
-  - sensorCollider: {fileID: 2109233103}
-    layersToSense:
-      serializedVersion: 2
-      m_Bits: 64
-    OnSensorEnter:
-      m_PersistentCalls:
-        m_Calls: []
-    OnSensorExit:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 2063874616}
-          m_TargetAssemblyTypeName: IdleMovementState, Assembly-CSharp
-          m_MethodName: FlipMovementDirection
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-    OnSensorStay:
-      m_PersistentCalls:
-        m_Calls: []
-  - sensorCollider: {fileID: 775578107}
-    layersToSense:
-      serializedVersion: 2
-      m_Bits: 64
-    OnSensorEnter:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 2063874616}
-          m_TargetAssemblyTypeName: IdleMovementState, Assembly-CSharp
-          m_MethodName: FlipMovementDirection
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-    OnSensorExit:
-      m_PersistentCalls:
-        m_Calls: []
-    OnSensorStay:
-      m_PersistentCalls:
-        m_Calls: []
---- !u!61 &2109233103 stripped
-BoxCollider2D:
-  m_CorrespondingSourceObject: {fileID: 2057955398, guid: a1b98571214174b43a6baff78099f94d, type: 3}
-  m_PrefabInstance: {fileID: 8428335306327653872}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &862832527731073456
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21208,14 +21071,6 @@ PrefabInstance:
     - target: {fileID: 8428335305099256051, guid: a1b98571214174b43a6baff78099f94d, type: 3}
       propertyPath: m_Name
       value: Hound
-      objectReference: {fileID: 0}
-    - target: {fileID: 8428335305099256052, guid: a1b98571214174b43a6baff78099f94d, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8428335305099256052, guid: a1b98571214174b43a6baff78099f94d, type: 3}
-      propertyPath: idleDurationMax
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8428335305099256057, guid: a1b98571214174b43a6baff78099f94d, type: 3}
       propertyPath: m_RootOrder

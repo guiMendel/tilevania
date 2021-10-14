@@ -7,9 +7,7 @@ using UnityEngine.Events;
 using UnityEngine.PlayerLoop;
 using Random = UnityEngine.Random;
 
-// TODO que tal fazer uma classe abstrata State que ja implementa esse enable e disable e fornece o isCurrentState
-
-public class IdleMovementState : State
+public class IdleWanderState : State
 {
   [Header("Idle movement settings")]
   [SerializeField] float moveDurationMin = 0.5f;
@@ -17,28 +15,29 @@ public class IdleMovementState : State
   [SerializeField] float idleDurationMin = 1f;
   [SerializeField] float idleDurationMax = 5f;
 
-  // Events
-  [Serializable] public class FloatEvent : UnityEvent<float> { }
-  [Tooltip("Gets invoked each frame the character must move. Provides a movement modifier float")]
-  public FloatEvent OnIdleMove;
-  public FloatEvent OnChangeDirection;
-
   // State
 
   // It's current movement
   float movement = 0f;
 
+  // Refs
+  MovementInterface movementComponent;
+
   protected override void OnAwake()
   {
-    // Set up events
-    if (OnIdleMove == null) OnIdleMove = new FloatEvent();
-    if (OnChangeDirection == null) OnChangeDirection = new FloatEvent();
+    // Get refs
+    movementComponent = GetComponent<MovementInterface>();
+
+    if (movementComponent == null)
+    {
+      Debug.LogError(gameObject.name + " is missing " + movementComponent.GetType().Name + " component");
+    }
   }
 
   protected override void OnUpdate()
   {
     // Emit move event
-    if (isCurrentState) OnIdleMove.Invoke(movement);
+    if (isCurrentState) movementComponent.Move(movement);
   }
 
   private IEnumerator Wander()
@@ -77,7 +76,7 @@ public class IdleMovementState : State
     movement = 0f;
 
     // Erase movement
-    OnIdleMove.Invoke(movement);
+    movementComponent.Move(movement);
   }
 
   // Sets this as the current state and starts emitting events
@@ -95,6 +94,6 @@ public class IdleMovementState : State
   public void FlipMovementDirection()
   {
     movement = -movement;
-    if (movement != 0) OnChangeDirection.Invoke(movement);
+    if (movement != 0) movementComponent.SetFacingDirection(movement);
   }
 }
