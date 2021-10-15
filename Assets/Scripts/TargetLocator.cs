@@ -3,11 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 // Whenever the target gameObject walks into sight range, raises target located events
 public class TargetLocator : MonoBehaviour
 {
-  // Params
+  //=== Params
   [Tooltip("The angle of vision, in degrees. It corresponds to half the vision cone")]
   [SerializeField] float sightAngle = 45f;
 
@@ -20,12 +21,32 @@ public class TargetLocator : MonoBehaviour
   [Tooltip("Which layers should block the vision")]
   [SerializeField] LayerMask blockingLayers;
 
-  // Refs
+  //=== State
+
+  // Whether the target was spotted last frame
+  bool targetSpottedLastFrame;
+
+  //=== Events
+
+  // Event type
+  [Serializable] public class Vector2Event : UnityEvent<Vector2> { }
+
+  // Target spotted event
+  public Vector2Event OnTargetSpotted;
+
+  // Target lost event
+  public UnityEvent OnTargetLost;
+
+  //=== Refs
   Collider2D _collider2D;
 
   private void Awake()
   {
     GetRefs();
+
+    // Init
+    if (OnTargetSpotted == null) OnTargetSpotted = new Vector2Event();
+    if (OnTargetLost == null) OnTargetLost = new UnityEvent();
   }
 
   private void Update()
@@ -35,13 +56,35 @@ public class TargetLocator : MonoBehaviour
 
     // Perform a raycast check
     RaycastHit2D hit = Physics2D.Raycast(transform.position, targetDirection, sightRange, getRaycastLayers());
-    Debug.DrawRay(transform.position, targetDirection * sightRange);
 
     // Check if it hit the target
-    if (hit.collider)
-    // if (hit.collider && GameObject.ReferenceEquals(hit.collider.gameObject, target))
+    bool targetSpotted = hit.collider && (
+      // Either it hit the target
+      GameObject.ReferenceEquals(hit.collider.gameObject, target) ||
+      // Or one of it's children
+      hit.collider.transform.IsChildOf(target.transform)
+    );
+
+    // Visualize the sight ray
+    Debug.DrawRay(transform.position, targetDirection * hit.distance, targetSpotted ? Color.green : Color.red);
+
+    if (targetSpotted)
     {
-      print(hit.collider);
+      // Raise event
+      OnTargetSpotted.Invoke(hit.point);
+
+      // Register hit
+      targetSpottedLastFrame = true;
+    }
+
+    // If not spotted, see if target was lost
+    else if (targetSpottedLastFrame)
+    {
+      // Register target loss
+      targetSpottedLastFrame = false;
+
+      // Raise loss event 
+      OnTargetLost.Invoke();
     }
   }
 
