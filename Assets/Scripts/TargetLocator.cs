@@ -9,6 +9,9 @@ using UnityEngine.Events;
 public class TargetLocator : MonoBehaviour
 {
   //=== Params
+  [Tooltip("Whether to invert the direction the character faces")]
+  [SerializeField] bool invertFacingDirection;
+
   [Tooltip("The angle of vision, in degrees. It corresponds to half the vision cone")]
   [SerializeField] float sightAngle = 45f;
 
@@ -26,6 +29,9 @@ public class TargetLocator : MonoBehaviour
   // Whether the target was spotted last frame
   bool targetSpottedLastFrame;
 
+  // Which direction the character is facing
+
+  Vector2 facingDirection;
   //=== Events
 
   // Event type
@@ -51,6 +57,30 @@ public class TargetLocator : MonoBehaviour
 
   private void Update()
   {
+    // Update facing direction
+    facingDirection = new Vector2(
+      invertFacingDirection ? -transform.localScale.x : transform.localScale.x,
+      0
+    ).normalized;
+
+    // Try to spot the target
+    LocateTarget();
+
+    // Print the debug sight cone
+    PrintSightCone();
+  }
+
+  private void PrintSightCone()
+  {
+    // First ray
+    Debug.DrawRay(transform.position, Quaternion.Euler(0, 0, sightAngle) * facingDirection * sightRange);
+
+    // Second ray
+    Debug.DrawRay(transform.position, Quaternion.Euler(0, 0, -sightAngle) * facingDirection * sightRange);
+  }
+
+  private void LocateTarget()
+  {
     // Get target direction
     Vector2 targetDirection = (target.transform.position - transform.position).normalized;
 
@@ -58,15 +88,18 @@ public class TargetLocator : MonoBehaviour
     RaycastHit2D hit = Physics2D.Raycast(transform.position, targetDirection, sightRange, getRaycastLayers());
 
     // Check if it hit the target
-    bool targetSpotted = hit.collider && (
+    bool targetInRange = hit.collider && (
       // Either it hit the target
       GameObject.ReferenceEquals(hit.collider.gameObject, target) ||
       // Or one of it's children
       hit.collider.transform.IsChildOf(target.transform)
     );
 
-    // Visualize the sight ray
-    Debug.DrawRay(transform.position, targetDirection * hit.distance, targetSpotted ? Color.green : Color.red);
+    // Check if it's inside the sight cone
+    bool targetSpotted = targetInRange && TargetInSightCone(targetDirection);
+
+    // Debug ray
+    DrawSightRay(targetDirection * hit.distance, targetInRange, targetSpotted);
 
     if (targetSpotted)
     {
@@ -86,6 +119,30 @@ public class TargetLocator : MonoBehaviour
       // Raise loss event 
       OnTargetLost.Invoke();
     }
+  }
+
+  private void DrawSightRay(Vector2 targetDirection, bool targetInRange, bool targetSpotted)
+  {
+    // The sight ray color logic
+    Color sightRayColor;
+    if (targetSpotted) sightRayColor = Color.green;
+    else if (targetInRange) sightRayColor = Color.yellow;
+    else sightRayColor = Color.red;
+
+    // Visualize the sight ray
+    Debug.DrawRay(transform.position, targetDirection, sightRayColor);
+  }
+
+  private bool TargetInSightCone(Vector2 targetDirection)
+  {
+    // This dot product is equal to the cosine of the vector's angle
+    float targetAngleCosine = Vector2.Dot(facingDirection, targetDirection);
+    float targetAngle = Mathf.Acos(targetAngleCosine) * Mathf.Rad2Deg;
+
+    print(targetAngle);
+
+    // Check if it's under the sight angle
+    return targetAngle <= sightAngle;
   }
 
   private int getRaycastLayers()

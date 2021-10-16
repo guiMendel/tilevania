@@ -5,12 +5,12 @@ using UnityEngine;
 
 public class ChaseState : State
 {
-  // State
+  //=== State
 
   // Which target is currently being chased
   Vector2 currentTarget;
 
-  // Refs
+  //=== Refs
   MovementInterface movementComponent;
 
   protected override void OnAwake()
@@ -43,7 +43,7 @@ public class ChaseState : State
     movementComponent.Move(direction);
   }
 
-  // Interface
+  //=== Interface
 
   public void SetTarget(Vector2 target)
   {
