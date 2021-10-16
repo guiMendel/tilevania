@@ -12,17 +12,22 @@ public class TargetLocator : MonoBehaviour
   [Tooltip("Whether to invert the direction the character faces")]
   [SerializeField] bool invertFacingDirection;
 
+  [Header("Sight parameters")]
   [Tooltip("The angle of vision, in degrees. It corresponds to half the vision cone")]
-  [SerializeField] float sightAngle = 45f;
+  [Min(0f)] [SerializeField] float sightAngle = 45f;
 
   [Tooltip("How far the sight goes")]
-  [SerializeField] float sightRange = 6f;
+  [Min(0f)] [SerializeField] float sightRange = 6f;
 
+  [Header("Detection")]
   [Tooltip("Which target will trigger a target located event")]
   [SerializeField] GameObject target;
 
   [Tooltip("Which layers should block the vision")]
   [SerializeField] LayerMask blockingLayers;
+
+  [Tooltip("For how long the target's position will still be known after it's no longer in sight\nTarget lost event will only be triggered after this time has been elapsed")]
+  [Min(0f)] [SerializeField] float predictionTime = 0.5f;
 
   //=== State
 
@@ -30,8 +35,11 @@ public class TargetLocator : MonoBehaviour
   bool targetSpottedLastFrame;
 
   // Which direction the character is facing
-
   Vector2 facingDirection;
+
+  // Whether it's currently predicting the target's position
+  Coroutine prediction;
+
   //=== Events
 
   // Event type
@@ -108,17 +116,45 @@ public class TargetLocator : MonoBehaviour
 
       // Register hit
       targetSpottedLastFrame = true;
+
+      // Reset prediction, if it's active
+      if (prediction != null) {
+        StopCoroutine(prediction);
+        prediction = null;
+      }
     }
 
     // If not spotted, see if target was lost
     else if (targetSpottedLastFrame)
     {
-      // Register target loss
-      targetSpottedLastFrame = false;
+      // Check if there's prediction time, to start prediction coroutine
+      if (predictionTime > 0f) prediction = StartCoroutine(PredictTargetLocation());
+      else LoseTarget();
 
-      // Raise loss event 
-      OnTargetLost.Invoke();
+      targetSpottedLastFrame = false;
     }
+
+    // If is currently predicting, only raise the event
+    else if (prediction != null) OnTargetSpotted.Invoke(hit.point);
+  }
+
+  private IEnumerator PredictTargetLocation()
+  {
+    // Wait prediction time
+    yield return new WaitForSeconds(predictionTime);
+
+    // Coroutine hasn't been cancelled until now, so lose target
+    LoseTarget();
+  }
+
+  private void LoseTarget()
+  {
+    // Register target loss
+    targetSpottedLastFrame = false;
+    prediction = null;
+
+    // Raise loss event 
+    OnTargetLost.Invoke();
   }
 
   private void DrawSightRay(Vector2 targetDirection, bool targetInRange, bool targetSpotted)
@@ -138,8 +174,6 @@ public class TargetLocator : MonoBehaviour
     // This dot product is equal to the cosine of the vector's angle
     float targetAngleCosine = Vector2.Dot(facingDirection, targetDirection);
     float targetAngle = Mathf.Acos(targetAngleCosine) * Mathf.Rad2Deg;
-
-    print(targetAngle);
 
     // Check if it's under the sight angle
     return targetAngle <= sightAngle;

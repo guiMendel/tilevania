@@ -20896,81 +20896,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 862832527107834563, guid: 4408e8035af22437eba268101ddb8b04, type: 3}
   m_PrefabInstance: {fileID: 862832527731073456}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &2063874609 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8428335305099256051, guid: a1b98571214174b43a6baff78099f94d, type: 3}
-  m_PrefabInstance: {fileID: 8428335306327653872}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2063874610
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2063874609}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7bce129ecc79c4595bb527f86b49e458, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sightAngle: 45
-  sightRange: 6
-  target: {fileID: 1548903870}
-  blockingLayers:
-    serializedVersion: 2
-    m_Bits: 2369
-  OnTargetSpotted:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2063874621}
-        m_TargetAssemblyTypeName: ChaseState, Assembly-CSharp
-        m_MethodName: SetTarget
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnTargetLost:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2063874616}
-        m_TargetAssemblyTypeName: State, Assembly-CSharp
-        m_MethodName: Enable
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &2063874616 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2063874616, guid: a1b98571214174b43a6baff78099f94d, type: 3}
-  m_PrefabInstance: {fileID: 8428335306327653872}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2063874609}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1612194536e87471fbfb5f1ddde957f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2063874621 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2063874621, guid: a1b98571214174b43a6baff78099f94d, type: 3}
-  m_PrefabInstance: {fileID: 8428335306327653872}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2063874609}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96ceecb93027d4ba09453a22552cf5e5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &862832527731073456
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20978,14 +20903,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1794794356, guid: 4408e8035af22437eba268101ddb8b04, type: 3}
-      propertyPath: godMode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1794794356, guid: 4408e8035af22437eba268101ddb8b04, type: 3}
-      propertyPath: deathSlowFallGravityScale
-      value: 0.05
-      objectReference: {fileID: 0}
     - target: {fileID: 862832527107834563, guid: 4408e8035af22437eba268101ddb8b04, type: 3}
       propertyPath: m_Name
       value: Player
@@ -21045,7 +20962,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6810722530499758235, guid: b0b8eb2accedd4cdea847c2b102f6da0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.77939105
+      value: 0.7793913
       objectReference: {fileID: 0}
     - target: {fileID: 6810722530499758235, guid: b0b8eb2accedd4cdea847c2b102f6da0, type: 3}
       propertyPath: m_LocalPosition.y
@@ -21113,7 +21030,7 @@ PrefabInstance:
       objectReference: {fileID: 999609690}
     - target: {fileID: 6810722531827183769, guid: b0b8eb2accedd4cdea847c2b102f6da0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.5036829
+      value: -1.5036826
       objectReference: {fileID: 0}
     - target: {fileID: 6810722531827183769, guid: b0b8eb2accedd4cdea847c2b102f6da0, type: 3}
       propertyPath: m_LocalPosition.y
@@ -21125,7 +21042,7 @@ PrefabInstance:
       objectReference: {fileID: 1241850475}
     - target: {fileID: 6810722531854940608, guid: b0b8eb2accedd4cdea847c2b102f6da0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.5036829
+      value: -1.5036826
       objectReference: {fileID: 0}
     - target: {fileID: 6810722531854940608, guid: b0b8eb2accedd4cdea847c2b102f6da0, type: 3}
       propertyPath: m_LocalPosition.y
@@ -21148,6 +21065,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2063874610, guid: a1b98571214174b43a6baff78099f94d, type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 1548903870}
     - target: {fileID: 8428335305099256051, guid: a1b98571214174b43a6baff78099f94d, type: 3}
       propertyPath: m_Name
       value: Hound

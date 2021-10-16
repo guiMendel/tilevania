@@ -232,6 +232,7 @@ GameObject:
   - component: {fileID: 2063874619}
   - component: {fileID: 2063874620}
   - component: {fileID: 2063874621}
+  - component: {fileID: 2063874610}
   m_Layer: 10
   m_Name: Hound
   m_TagString: Untagged
@@ -507,3 +508,53 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingState: 0
   stateKey: 
+--- !u!114 &2063874610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8428335305099256051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bce129ecc79c4595bb527f86b49e458, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  invertFacingDirection: 1
+  sightAngle: 45
+  sightRange: 6
+  target: {fileID: 0}
+  blockingLayers:
+    serializedVersion: 2
+    m_Bits: 2369
+  predictionTime: 1
+  OnTargetSpotted:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2063874621}
+        m_TargetAssemblyTypeName: ChaseState, Assembly-CSharp
+        m_MethodName: SetTarget
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnTargetLost:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2063874616}
+        m_TargetAssemblyTypeName: State, Assembly-CSharp
+        m_MethodName: Enable
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

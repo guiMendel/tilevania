@@ -221,3 +221,4 @@ MonoBehaviour:
   dashSpeedMultiplier: 2
   launchVelocity: {x: 15, y: 10}
   deathSlowFallGravityScale: 0.05
+  godMode: 1
