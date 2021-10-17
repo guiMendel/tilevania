@@ -5,7 +5,7 @@ using UnityEngine;
 
 // Component dependencies
 [RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(CollisionSensor))]
+[RequireComponent(typeof(Collider2D))]
 
 public class GroundMovement : MonoBehaviour, MovementInterface
 {
@@ -16,8 +16,15 @@ public class GroundMovement : MonoBehaviour, MovementInterface
   [Tooltip("The base speed in which the character moves")]
   [SerializeField] float baseSpeed = 5f;
 
+  [Header("Jumping")]
   [Tooltip("Vertical velocity to add on jump")]
   [SerializeField] float jumpPower = 10f;
+
+  [Tooltip("Which layers will the character be able to jump off of")]
+  [SerializeField] LayerMask groundLayers;
+
+  [Tooltip("Which collider will determine if character is close enough to ground")]
+  [SerializeField] Collider2D feetCollider;
 
   //=== State
 
@@ -29,7 +36,6 @@ public class GroundMovement : MonoBehaviour, MovementInterface
 
   //=== Refs
   Rigidbody2D _rigidbody;
-  CollisionSensor _collisionSensor;
 
   private void Awake()
   {
@@ -53,10 +59,21 @@ public class GroundMovement : MonoBehaviour, MovementInterface
     }
   }
 
+  private bool IsGrounded()
+  {
+    // Cast downwards
+    ContactFilter2D contactFilter = new ContactFilter2D();
+    contactFilter.SetLayerMask(groundLayers);
+
+    int hitCount = feetCollider.Cast(Vector2.down, contactFilter, new RaycastHit2D[5], 0.1f);
+
+    // See if any of them hit
+    return hitCount > 0;
+  }
+
   private void GetComponentRefs()
   {
     _rigidbody = GetComponent<Rigidbody2D>();
-    _collisionSensor = GetComponent<CollisionSensor>();
   }
 
   //=== Interface
@@ -93,7 +110,7 @@ public class GroundMovement : MonoBehaviour, MovementInterface
   public void Jump()
   {
     // Ensure it's grounded
-    if (!_collisionSensor.IsGrounded()) return;
+    if (!IsGrounded()) return;
 
     // Add y velocity
     _rigidbody.velocity = new Vector2(_rigidbody.velocity.y, jumpPower);
