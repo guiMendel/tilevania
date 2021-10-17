@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -20,7 +21,7 @@ public class TargetLocator : MonoBehaviour
   [Min(0f)] [SerializeField] float sightRange = 6f;
 
   [Header("Detection")]
-  [Tooltip("Which target will trigger a target located event")]
+  [Tooltip("Which target will trigger a target located event\nIMPORTANT: target must NOT be in the same layer as this game object!")]
   [SerializeField] GameObject target;
 
   [Tooltip("Which layers should block the vision")]
@@ -65,26 +66,36 @@ public class TargetLocator : MonoBehaviour
 
   private void Update()
   {
+    UpdateFacingDirection();
+
+    // Try to spot the target
+    LocateTarget();
+  }
+
+  private void OnDrawGizmosSelected()
+  {
+    // Print the debug sight cone
+    PrintSightCone();
+  }
+
+  private void UpdateFacingDirection()
+  {
     // Update facing direction
     facingDirection = new Vector2(
       invertFacingDirection ? -transform.localScale.x : transform.localScale.x,
       0
     ).normalized;
-
-    // Try to spot the target
-    LocateTarget();
-
-    // Print the debug sight cone
-    PrintSightCone();
   }
 
   private void PrintSightCone()
   {
+    if (facingDirection == null || facingDirection.x == 0f) UpdateFacingDirection();
+
     // First ray
-    Debug.DrawRay(transform.position, Quaternion.Euler(0, 0, sightAngle) * facingDirection * sightRange);
+    Gizmos.DrawRay(transform.position, Quaternion.Euler(0, 0, sightAngle) * facingDirection * sightRange);
 
     // Second ray
-    Debug.DrawRay(transform.position, Quaternion.Euler(0, 0, -sightAngle) * facingDirection * sightRange);
+    Gizmos.DrawRay(transform.position, Quaternion.Euler(0, 0, -sightAngle) * facingDirection * sightRange);
   }
 
   private void LocateTarget()
@@ -118,7 +129,8 @@ public class TargetLocator : MonoBehaviour
       targetSpottedLastFrame = true;
 
       // Reset prediction, if it's active
-      if (prediction != null) {
+      if (prediction != null)
+      {
         StopCoroutine(prediction);
         prediction = null;
       }
@@ -171,9 +183,7 @@ public class TargetLocator : MonoBehaviour
 
   private bool TargetInSightCone(Vector2 targetDirection)
   {
-    // This dot product is equal to the cosine of the vector's angle
-    float targetAngleCosine = Vector2.Dot(facingDirection, targetDirection);
-    float targetAngle = Mathf.Acos(targetAngleCosine) * Mathf.Rad2Deg;
+    float targetAngle = Vector3.Angle(targetDirection, facingDirection);
 
     // Check if it's under the sight angle
     return targetAngle <= sightAngle;

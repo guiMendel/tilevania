@@ -521,7 +521,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   invertFacingDirection: 1
-  sightAngle: 45
+  sightAngle: 25
   sightRange: 6
   target: {fileID: 0}
   blockingLayers:
