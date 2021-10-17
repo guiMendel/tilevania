@@ -20906,6 +20906,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8428335305099256051, guid: a1b98571214174b43a6baff78099f94d, type: 3}
   m_PrefabInstance: {fileID: 8428335306327653872}
   m_PrefabAsset: {fileID: 0}
+--- !u!61 &2063874612 stripped
+BoxCollider2D:
+  m_CorrespondingSourceObject: {fileID: 8428335305099256054, guid: a1b98571214174b43a6baff78099f94d, type: 3}
+  m_PrefabInstance: {fileID: 8428335306327653872}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &2063874618 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2063874618, guid: a1b98571214174b43a6baff78099f94d, type: 3}
@@ -20995,7 +21000,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6810722530499758235, guid: b0b8eb2accedd4cdea847c2b102f6da0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.7793913
+      value: 0.77939105
       objectReference: {fileID: 0}
     - target: {fileID: 6810722530499758235, guid: b0b8eb2accedd4cdea847c2b102f6da0, type: 3}
       propertyPath: m_LocalPosition.y
@@ -21063,7 +21068,7 @@ PrefabInstance:
       objectReference: {fileID: 999609690}
     - target: {fileID: 6810722531827183769, guid: b0b8eb2accedd4cdea847c2b102f6da0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.5036826
+      value: -1.5036829
       objectReference: {fileID: 0}
     - target: {fileID: 6810722531827183769, guid: b0b8eb2accedd4cdea847c2b102f6da0, type: 3}
       propertyPath: m_LocalPosition.y
@@ -21075,7 +21080,7 @@ PrefabInstance:
       objectReference: {fileID: 1241850475}
     - target: {fileID: 6810722531854940608, guid: b0b8eb2accedd4cdea847c2b102f6da0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.5036826
+      value: -1.5036829
       objectReference: {fileID: 0}
     - target: {fileID: 6810722531854940608, guid: b0b8eb2accedd4cdea847c2b102f6da0, type: 3}
       propertyPath: m_LocalPosition.y
@@ -21103,12 +21108,24 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1548903870}
     - target: {fileID: 2063874618, guid: a1b98571214174b43a6baff78099f94d, type: 3}
+      propertyPath: inertia
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2063874618, guid: a1b98571214174b43a6baff78099f94d, type: 3}
       propertyPath: baseSpeed
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2063874618, guid: a1b98571214174b43a6baff78099f94d, type: 3}
       propertyPath: jumpPower
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2063874618, guid: a1b98571214174b43a6baff78099f94d, type: 3}
+      propertyPath: feetCollider
+      value: 
+      objectReference: {fileID: 2063874612}
+    - target: {fileID: 2063874618, guid: a1b98571214174b43a6baff78099f94d, type: 3}
+      propertyPath: groundLayers.m_Bits
+      value: 64
       objectReference: {fileID: 0}
     - target: {fileID: 2063874619, guid: a1b98571214174b43a6baff78099f94d, type: 3}
       propertyPath: groundCheckSensor.sensorCollider
