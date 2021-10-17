@@ -25,7 +25,7 @@ public class SharedState : MonoBehaviour
     return value;
   }
 
-  // Returns what the current state for this stateKey is
+  // Sets a new value for the given state key
   public string SetState(string stateKey, string value)
   {
     return stateMap[stateKey] = value;

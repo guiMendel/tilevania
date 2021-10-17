@@ -93,6 +93,8 @@ public class IdleWanderState : State
   // Switches movement direction
   public void FlipMovementDirection()
   {
+    if (!isCurrentState) return;
+    
     movement = -movement;
     if (movement != 0) movementComponent.SetFacingDirection(movement);
   }

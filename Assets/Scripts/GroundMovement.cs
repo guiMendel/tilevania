@@ -5,16 +5,21 @@ using UnityEngine;
 
 // Component dependencies
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(CollisionSensor))]
 
 public class GroundMovement : MonoBehaviour, MovementInterface
 {
-  // Params
-  [Tooltip("The base speed in which the character moves")]
-  [SerializeField] float baseSpeed = 5f;
+  //=== Params
   [Tooltip("Whether to invert the direction the character faces")]
   [SerializeField] bool invertFacingDirection;
 
-  // State
+  [Tooltip("The base speed in which the character moves")]
+  [SerializeField] float baseSpeed = 5f;
+
+  [Tooltip("Vertical velocity to add on jump")]
+  [SerializeField] float jumpPower = 10f;
+
+  //=== State
 
   // Stores how much movement was applied in this frame
   float frameMovement;
@@ -22,8 +27,9 @@ public class GroundMovement : MonoBehaviour, MovementInterface
   // Stores how much movement was applied last frame
   float lastFrameMovement;
 
-  // Refs
+  //=== Refs
   Rigidbody2D _rigidbody;
+  CollisionSensor _collisionSensor;
 
   private void Awake()
   {
@@ -50,15 +56,10 @@ public class GroundMovement : MonoBehaviour, MovementInterface
   private void GetComponentRefs()
   {
     _rigidbody = GetComponent<Rigidbody2D>();
-
-    // Report dependencies
-    if (_rigidbody == null)
-    {
-      Debug.LogError(gameObject.name + " is missing " + _rigidbody.GetType().Name + " component");
-    }
+    _collisionSensor = GetComponent<CollisionSensor>();
   }
 
-  // Interface
+  //=== Interface
 
   // Apply movement to character. The movementModifier param can alter the direction as well as the speed
   public void Move(float movementModifier)
@@ -86,5 +87,15 @@ public class GroundMovement : MonoBehaviour, MovementInterface
   {
     float directionModifier = invertFacingDirection ? -1 : 1;
     transform.localScale = new Vector2(Mathf.Sign(direction) * directionModifier, 1f);
+  }
+
+  // Jump method
+  public void Jump()
+  {
+    // Ensure it's grounded
+    if (!_collisionSensor.IsGrounded()) return;
+
+    // Add y velocity
+    _rigidbody.velocity = new Vector2(_rigidbody.velocity.y, jumpPower);
   }
 }

@@ -28,6 +28,9 @@ public class CollisionSensor : MonoBehaviour
   [Tooltip("Defines sensors attached to the game object's colliders, as well as listeners to these sensors")]
   public Sensor[] sensors;
 
+  [Tooltip("Defines which sensor handles ground checks specifically")]
+  [SerializeField] private Sensor groundCheckSensor;
+
   private void Update()
   {
     for (int i = 0; i < sensors.Length; i++)
@@ -55,4 +58,11 @@ public class CollisionSensor : MonoBehaviour
     }
   }
 
+  //=== Interface
+  public bool IsGrounded()
+  {
+    bool hasGroundSensor = !groundCheckSensor.Equals(default(Sensor));
+
+    return hasGroundSensor && groundCheckSensor.sensorCollider.IsTouchingLayers(groundCheckSensor.layersToSense);
+  }
 }

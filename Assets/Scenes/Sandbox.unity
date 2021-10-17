@@ -20891,11 +20891,44 @@ TilemapCollider2D:
   m_Offset: {x: 0, y: 0}
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0.00001
+--- !u!61 &1537177964 stripped
+BoxCollider2D:
+  m_CorrespondingSourceObject: {fileID: 1537177964, guid: a1b98571214174b43a6baff78099f94d, type: 3}
+  m_PrefabInstance: {fileID: 8428335306327653872}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1548903870 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 862832527107834563, guid: 4408e8035af22437eba268101ddb8b04, type: 3}
   m_PrefabInstance: {fileID: 862832527731073456}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2063874609 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8428335305099256051, guid: a1b98571214174b43a6baff78099f94d, type: 3}
+  m_PrefabInstance: {fileID: 8428335306327653872}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2063874618 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2063874618, guid: a1b98571214174b43a6baff78099f94d, type: 3}
+  m_PrefabInstance: {fileID: 8428335306327653872}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2063874609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61a1e27d78e014a70b8279bb40c2cf5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2063874622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2063874609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb9cac0913b83467d93cd43ae1aa6201, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &862832527731073456
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21069,6 +21102,50 @@ PrefabInstance:
       propertyPath: target
       value: 
       objectReference: {fileID: 1548903870}
+    - target: {fileID: 2063874618, guid: a1b98571214174b43a6baff78099f94d, type: 3}
+      propertyPath: baseSpeed
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2063874618, guid: a1b98571214174b43a6baff78099f94d, type: 3}
+      propertyPath: jumpPower
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2063874619, guid: a1b98571214174b43a6baff78099f94d, type: 3}
+      propertyPath: groundCheckSensor.sensorCollider
+      value: 
+      objectReference: {fileID: 1537177964}
+    - target: {fileID: 2063874619, guid: a1b98571214174b43a6baff78099f94d, type: 3}
+      propertyPath: groundCheckSensor.layersToSense.m_Bits
+      value: 64
+      objectReference: {fileID: 0}
+    - target: {fileID: 2063874619, guid: a1b98571214174b43a6baff78099f94d, type: 3}
+      propertyPath: sensors.Array.data[1].OnSensorStay.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2063874619, guid: a1b98571214174b43a6baff78099f94d, type: 3}
+      propertyPath: sensors.Array.data[1].OnSensorStay.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2063874619, guid: a1b98571214174b43a6baff78099f94d, type: 3}
+      propertyPath: sensors.Array.data[1].OnSensorStay.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 2063874618}
+    - target: {fileID: 2063874619, guid: a1b98571214174b43a6baff78099f94d, type: 3}
+      propertyPath: sensors.Array.data[1].OnSensorStay.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2063874619, guid: a1b98571214174b43a6baff78099f94d, type: 3}
+      propertyPath: sensors.Array.data[1].OnSensorStay.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: Jump
+      objectReference: {fileID: 0}
+    - target: {fileID: 2063874619, guid: a1b98571214174b43a6baff78099f94d, type: 3}
+      propertyPath: sensors.Array.data[1].OnSensorStay.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: GroundMovement, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2063874619, guid: a1b98571214174b43a6baff78099f94d, type: 3}
+      propertyPath: sensors.Array.data[1].OnSensorStay.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 8428335305099256051, guid: a1b98571214174b43a6baff78099f94d, type: 3}
       propertyPath: m_Name
       value: Hound
