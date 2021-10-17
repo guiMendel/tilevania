@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -29,5 +30,11 @@ public class SharedState : MonoBehaviour
   public string SetState(string stateKey, string value)
   {
     return stateMap[stateKey] = value;
+  }
+
+  // Checks if the provided state is the one stored in it's corresponding state key
+  public bool IsStateActive(State state)
+  {
+    return GetState(state.GetStateKeyName()) == state.GetType().Name;
   }
 }

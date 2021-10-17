@@ -8,6 +8,7 @@ using Random = UnityEngine.Random;
 [RequireComponent(typeof(SharedState))]
 [RequireComponent(typeof(CollisionSensor))]
 [RequireComponent(typeof(GroundMovement))]
+[RequireComponent(typeof(ChaseState))]
 
 public class Hound : MonoBehaviour
 {
@@ -15,32 +16,26 @@ public class Hound : MonoBehaviour
   SharedState _sharedState;
   CollisionSensor _collisionSensor;
   GroundMovement _groundMovement;
+  ChaseState _chaseState;
 
   private void Awake()
   {
     _sharedState = GetComponent<SharedState>();
     _collisionSensor = GetComponent<CollisionSensor>();
     _groundMovement = GetComponent<GroundMovement>();
+    _chaseState = GetComponent<ChaseState>();
   }
 
   private void Start()
   {
     // When chasing, jump whenever facing a wall
-    Collider2D wallCollider = transform.Find("Wall Sensor").GetComponent<Collider2D>();
-
-    var wallSensor = Array.Find(
-      _collisionSensor.sensors,
-      sensor => GameObject.Equals(sensor.sensorCollider, wallCollider)
-    );
+    var wallSensor = _collisionSensor.GetSensorByGameObjectName("Wall Sensor");
 
     wallSensor.OnSensorStay.AddListener(JumpIfChasing);
   }
 
   private void JumpIfChasing()
   {
-    if (_sharedState.GetState("movement") == typeof(ChaseState).Name)
-    {
-      _groundMovement.Jump();
-    }
+    if (_sharedState.IsStateActive(_chaseState)) _groundMovement.Jump();
   }
 }

@@ -47,12 +47,6 @@ public abstract class State : MonoBehaviour
     OnUpdate();
   }
 
-  // Get key name
-  private string GetStateKeyName()
-  {
-    return String.IsNullOrEmpty(stateKey) ? GetDefaultStateKeyName() : stateKey;
-  }
-
   // Overridable methods
 
   protected virtual void OnStart() { }
@@ -62,7 +56,7 @@ public abstract class State : MonoBehaviour
 
   protected abstract string GetDefaultStateKeyName();
 
-  // Interface
+  //=== Interface
 
   // Sets this as the current state and starts emitting events
   public void Enable()
@@ -73,4 +67,11 @@ public abstract class State : MonoBehaviour
 
     OnStateEnable();
   }
+
+  // Get key name
+  public string GetStateKeyName()
+  {
+    return String.IsNullOrEmpty(stateKey) ? GetDefaultStateKeyName() : stateKey;
+  }
+
 }

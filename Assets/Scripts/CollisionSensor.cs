@@ -65,4 +65,14 @@ public class CollisionSensor : MonoBehaviour
 
     return hasGroundSensor && groundCheckSensor.sensorCollider.IsTouchingLayers(groundCheckSensor.layersToSense);
   }
+
+  public Sensor GetSensorByGameObjectName(string name)
+  {
+    Collider2D collider = transform.Find(name).GetComponent<Collider2D>();
+
+    return Array.Find(
+      sensors,
+      sensor => GameObject.Equals(sensor.sensorCollider, collider)
+    );
+  }
 }
