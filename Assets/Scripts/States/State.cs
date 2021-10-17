@@ -2,29 +2,42 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 // Deps
 [RequireComponent(typeof(SharedState))]
 
 public abstract class State : MonoBehaviour
 {
-  // Params
+  //=== Params
   [Header("State management")]
   [Tooltip("Whether this should be the starting state")]
   [SerializeField] bool startingState;
+
   [Tooltip("The state key used by this state")]
   public string stateKey;
 
-  // State
+  //=== State
 
   // If it's the currently active state
   protected bool isCurrentState { get; private set; }
 
-  // Refs
+  // If it was the active state last frame
+  protected bool wasCurrentState { get; private set; }
+
+  //=== Events
+  public UnityEvent OnStateEnabled;
+  public UnityEvent OnStateDisabled;
+
+  //=== Refs
   private SharedState _sharedState;
 
   private void Awake()
   {
+    // Events
+    if (OnStateEnabled == null) OnStateEnabled = new UnityEvent();
+    if (OnStateDisabled == null) OnStateDisabled = new UnityEvent();
+
     // Get refs
     _sharedState = GetComponent<SharedState>();
 
@@ -42,7 +55,11 @@ public abstract class State : MonoBehaviour
   private void Update()
   {
     // Keep state awareness updated
+    wasCurrentState = isCurrentState;
     isCurrentState = _sharedState.GetState(GetStateKeyName()) == this.GetType().Name;
+
+    // Check if state was disabled this frame
+    if (!isCurrentState && wasCurrentState) OnStateDisabled.Invoke();
 
     OnUpdate();
   }
@@ -65,6 +82,7 @@ public abstract class State : MonoBehaviour
     _sharedState.SetState(GetStateKeyName(), this.GetType().Name);
     isCurrentState = true;
 
+    OnStateEnabled.Invoke();
     OnStateEnable();
   }
 

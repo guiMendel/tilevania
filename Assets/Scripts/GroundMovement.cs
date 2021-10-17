@@ -15,10 +15,10 @@ public class GroundMovement : MonoBehaviour, MovementInterface
 
   [Header("Jumping")]
   [Tooltip("The base speed in which the character moves")]
-  [SerializeField] float baseSpeed = 5f;
+  public float baseSpeed = 5f;
 
   [Tooltip("How much inertia affects changes to the direction")]
-  [Range(0f, 1f)] [SerializeField] float inertia = 0f;
+  [Range(0f, 1f)] public float inertia = 0f;
 
   [Header("Jumping")]
   [Tooltip("Vertical velocity to add on jump")]
@@ -27,8 +27,8 @@ public class GroundMovement : MonoBehaviour, MovementInterface
   [Tooltip("Which layers will the character be able to jump off of")]
   [SerializeField] LayerMask groundLayers;
 
-  [Tooltip("Which collider will determine if character is close enough to ground")]
-  [SerializeField] Collider2D feetCollider;
+  [Tooltip("The position of the character's feet")]
+  [SerializeField] Transform feet;
 
   //=== State
 
@@ -66,13 +66,7 @@ public class GroundMovement : MonoBehaviour, MovementInterface
   private bool IsGrounded()
   {
     // Cast downwards
-    ContactFilter2D contactFilter = new ContactFilter2D();
-    contactFilter.SetLayerMask(groundLayers);
-
-    int hitCount = feetCollider.Cast(Vector2.down, contactFilter, new RaycastHit2D[5], 0.1f);
-
-    // See if any of them hit
-    return hitCount > 0;
+    return Physics2D.Raycast(feet.position, Vector2.down, 0.1f, groundLayers).collider != null;
   }
 
   private void GetComponentRefs()
