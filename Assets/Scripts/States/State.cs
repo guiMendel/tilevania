@@ -59,7 +59,11 @@ public abstract class State : MonoBehaviour
     isCurrentState = _sharedState.GetState(GetStateKeyName()) == this.GetType().Name;
 
     // Check if state was disabled this frame
-    if (!isCurrentState && wasCurrentState) OnStateDisabled.Invoke();
+    if (!isCurrentState && wasCurrentState)
+    {
+      OnStateDisable();
+      OnStateDisabled.Invoke();
+    }
 
     OnUpdate();
   }
@@ -70,6 +74,7 @@ public abstract class State : MonoBehaviour
   protected virtual void OnAwake() { }
   protected virtual void OnUpdate() { }
   protected virtual void OnStateEnable() { }
+  protected virtual void OnStateDisable() { }
 
   protected abstract string GetDefaultStateKeyName();
 
@@ -78,12 +83,15 @@ public abstract class State : MonoBehaviour
   // Sets this as the current state and starts emitting events
   public void Enable()
   {
+    // Ignore redundant calls
+    if (isCurrentState) return;
+    
     // Set state
     _sharedState.SetState(GetStateKeyName(), this.GetType().Name);
     isCurrentState = true;
 
-    OnStateEnabled.Invoke();
     OnStateEnable();
+    OnStateEnabled.Invoke();
   }
 
   // Get key name

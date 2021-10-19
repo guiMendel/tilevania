@@ -13,7 +13,7 @@ public class GroundMovement : MonoBehaviour, MovementInterface
   [Tooltip("Whether to invert the direction the character faces")]
   [SerializeField] bool invertFacingDirection;
 
-  [Header("Jumping")]
+  [Header("Movement")]
   [Tooltip("The base speed in which the character moves")]
   public float baseSpeed = 5f;
 
