@@ -65,8 +65,11 @@ public class GroundMovement : MonoBehaviour, MovementInterface
 
   private bool IsGrounded()
   {
+    // Layer mask
+    int layerMask = groundLayers & ~(1 << gameObject.layer);
+
     // Cast downwards
-    return Physics2D.Raycast(feet.position, Vector2.down, 0.1f, groundLayers).collider != null;
+    return Physics2D.Raycast(feet.position, Vector2.down, 0.1f, layerMask).collider != null;
   }
 
   private void GetComponentRefs()

@@ -17,6 +17,11 @@ public class PlayerMovement : MonoBehaviour
   [Tooltip("How much the walking speed gets multiplied by when player is dashing")]
   [SerializeField] float dashSpeedMultiplier = 2f;
 
+  [Header("Jumping")]
+  [Tooltip("Time elapsed between player command to jump and actual jump, in seconds")]
+  [SerializeField] float jumpAnticipation = 0.2f;
+
+
   //=== State
   // The dash multiplier application. If dashing, will be = dashSpeedMultiplier. If not, will be 1
   float activeDashModifier = 1f;
@@ -34,6 +39,9 @@ public class PlayerMovement : MonoBehaviour
   {
     // Detect walking & dashing
     InputWalkAndDash();
+
+    // Detect jumping
+    InputJump();
   }
 
   private void InputWalkAndDash()
@@ -88,5 +96,19 @@ public class PlayerMovement : MonoBehaviour
       // Check live time. If timer is due, die
       if (liveTimeCounter.ElapsedMilliseconds > dashTolerance) yield break;
     }
+  }
+
+  private void InputJump()
+  {
+    if (Input.GetButtonDown("Jump")) StartCoroutine(Jump());
+  }
+
+  private IEnumerator Jump()
+  {
+    // Wait anticipation time
+    yield return new WaitForSeconds(jumpAnticipation);
+
+    // Jump
+    _groundMovement.Jump();
   }
 }
