@@ -125,6 +125,9 @@ public class GroundMovement : MonoBehaviour, MovementInterface
   // Starts the climb coroutine
   private IEnumerator StartClimbing()
   {
+    // Announce climbing
+    SendMessage("OnStartClimbingMessage");
+
     // Will hold the climb movement for each frame
     float climbMovement = 0f;
 
@@ -162,6 +165,9 @@ public class GroundMovement : MonoBehaviour, MovementInterface
   {
     // Ignore redundant calls
     if (!IsClimbing()) return;
+
+    // Announce climbing stopped
+    SendMessage("OnStopClimbingMessage");
 
     // Reset gravity
     _rigidbody.gravityScale = defaultGravityScale;

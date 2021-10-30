@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,11 +19,11 @@ public class PlayerAnimationSync : MonoBehaviour
 
   private void Update()
   {
-    DetectMovement();
-    DetectAirborne();
+    DetectHorizontalMovement();
+    DetectVerticalMovement();
   }
 
-  private void DetectMovement()
+  private void DetectHorizontalMovement()
   {
     // Detect x movement (exerted by the player, not external entities)
     float xMovement = Mathf.Abs(_groundMovement.GetLastFrameMovement());
@@ -34,20 +35,50 @@ public class PlayerAnimationSync : MonoBehaviour
     _animator.SetBool("Sprinting", xMovement > _groundMovement.baseSpeed);
   }
 
-  private void DetectAirborne()
+  private void DetectVerticalMovement()
   {
+    // If climbing, set climbing direction. If not, set airborne direction
+    Action<float> setAnimatorParameter;
+
+    if (_animator.GetBool("Climbing"))
+    {
+      setAnimatorParameter = (float direction) => _animator.SetFloat("ClimbingSpeedMultiplier", direction);
+
+      // Reset the other one
+      _animator.SetInteger("AirborneDirection", (0));
+    }
+
+    else
+    {
+      setAnimatorParameter = (float direction) => _animator.SetInteger("AirborneDirection", (int)direction);
+
+      // Reset the other one
+      _animator.SetFloat("ClimbingSpeedMultiplier", 0f);
+    }
+
     // Detect y movement
     float yMovement = _rigidbody.velocity.y;
 
     // Detect almost stable
     if (Mathf.Abs(yMovement) <= 0.1f)
     {
-      _animator.SetInteger("AirborneDirection", 0);
+      setAnimatorParameter(0f);
       return;
     }
 
     // Detect significant vertical movement
-    _animator.SetInteger("AirborneDirection", (int)Mathf.Sign(yMovement));
+    setAnimatorParameter(Mathf.Sign(yMovement));
+  }
+
+  // Climbing states
+  void OnStartClimbingMessage()
+  {
+    _animator.SetBool("Climbing", true);
+  }
+
+  void OnStopClimbingMessage()
+  {
+    _animator.SetBool("Climbing", false);
   }
 
   //=== Interface
