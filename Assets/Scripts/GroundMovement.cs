@@ -187,8 +187,10 @@ public class GroundMovement : MonoBehaviour, MovementInterface
 
   //=== Interface
   // Whether the character is standing on a ground layer
-  public bool IsGrounded()
+  public bool IsGrounded(bool allowClimbing = false)
   {
+    if (allowClimbing && IsClimbing()) return true;
+
     // Layer mask
     int layerMask = groundLayers & ~(1 << gameObject.layer);
 
@@ -238,7 +240,7 @@ public class GroundMovement : MonoBehaviour, MovementInterface
   public void Jump(bool skipGroundCheck = false)
   {
     // Ensure it's grounded or climbing
-    if (!skipGroundCheck && !IsGrounded() && !IsClimbing()) return;
+    if (!skipGroundCheck && !IsGrounded(allowClimbing: true)) return;
 
     // Let go if climbing
     StopClimbing();

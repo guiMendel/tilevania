@@ -111,7 +111,7 @@ public class PlayerMovement : MonoBehaviour
   private IEnumerator Jump()
   {
     // Ground check
-    if (!_groundMovement.IsGrounded()) yield break;
+    if (!_groundMovement.IsGrounded(allowClimbing: true)) yield break;
 
     // Start animation
     _animationSync.JumpAnimation();
