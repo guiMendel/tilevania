@@ -63,7 +63,14 @@ public class GroundMovement : MonoBehaviour, MovementInterface
     }
   }
 
-  private bool IsGrounded()
+  private void GetComponentRefs()
+  {
+    _rigidbody = GetComponent<Rigidbody2D>();
+  }
+
+  //=== Interface
+  // Whether the character is standing on a ground layer
+  public bool IsGrounded()
   {
     // Layer mask
     int layerMask = groundLayers & ~(1 << gameObject.layer);
@@ -71,13 +78,6 @@ public class GroundMovement : MonoBehaviour, MovementInterface
     // Cast downwards
     return Physics2D.Raycast(feet.position, Vector2.down, 0.1f, layerMask).collider != null;
   }
-
-  private void GetComponentRefs()
-  {
-    _rigidbody = GetComponent<Rigidbody2D>();
-  }
-
-  //=== Interface
 
   // Apply movement to character. The movementModifier param can alter the direction as well as the speed
   public void Move(float movementModifier)
@@ -111,10 +111,10 @@ public class GroundMovement : MonoBehaviour, MovementInterface
   }
 
   // Jump method
-  public void Jump()
+  public void Jump(bool skipGroundCheck = false)
   {
     // Ensure it's grounded
-    if (!IsGrounded()) return;
+    if (!skipGroundCheck && !IsGrounded()) return;
 
     // Add y velocity
     _rigidbody.velocity = new Vector2(_rigidbody.velocity.y, jumpPower);

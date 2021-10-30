@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
 {
   //=== Params
   [Header("Dash Parameters")]
-  [Tooltip("How much time can pass between the two key presses of a dash, in milliseconds")]
+  [Tooltip("How many milliseconds may be tolerated between the two key presses of a dash")]
   [SerializeField] int dashTolerance = 500;
 
   [Tooltip("How much the walking speed gets multiplied by when player is dashing")]
@@ -19,7 +19,7 @@ public class PlayerMovement : MonoBehaviour
 
   [Header("Jumping")]
   [Tooltip("Time elapsed between player command to jump and actual jump, in seconds")]
-  [SerializeField] float jumpAnticipation = 0.2f;
+  [SerializeField] float jumpAnticipation = 0.1f;
 
 
   //=== State
@@ -28,10 +28,12 @@ public class PlayerMovement : MonoBehaviour
 
   //=== Refs
   GroundMovement _groundMovement;
+  PlayerAnimationSync _animationSync;
 
   void Awake()
   {
     _groundMovement = GetComponent<GroundMovement>();
+    _animationSync = GetComponent<PlayerAnimationSync>();
   }
 
   // Update is called once per frame
@@ -105,10 +107,16 @@ public class PlayerMovement : MonoBehaviour
 
   private IEnumerator Jump()
   {
+    // Ground check
+    if (!_groundMovement.IsGrounded()) yield break;
+
+    // Start animation
+    _animationSync.Jump();
+
     // Wait anticipation time
     yield return new WaitForSeconds(jumpAnticipation);
 
     // Jump
-    _groundMovement.Jump();
+    _groundMovement.Jump(skipGroundCheck: true);
   }
 }

@@ -20891,14 +20891,66 @@ TilemapCollider2D:
   m_Offset: {x: 0, y: 0}
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0.00001
---- !u!61 &1537177964 stripped
-BoxCollider2D:
-  m_CorrespondingSourceObject: {fileID: 1537177964, guid: a1b98571214174b43a6baff78099f94d, type: 3}
+--- !u!4 &1537177963 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1537177963, guid: a1b98571214174b43a6baff78099f94d, type: 3}
   m_PrefabInstance: {fileID: 8428335306327653872}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1548903870 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 862832527107834563, guid: 4408e8035af22437eba268101ddb8b04, type: 3}
+  m_PrefabInstance: {fileID: 862832527731073456}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1548903875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1548903870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61a1e27d78e014a70b8279bb40c2cf5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  invertFacingDirection: 0
+  baseSpeed: 3
+  inertia: 0
+  jumpPower: 14
+  groundLayers:
+    serializedVersion: 2
+    m_Bits: 64
+  feet: {fileID: 1940524023}
+--- !u!114 &1548903876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1548903870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 595400d5e410c4b429fa8746ba46b196, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dashTolerance: 500
+  dashSpeedMultiplier: 2
+  jumpAnticipation: 0.16
+--- !u!114 &1548903877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1548903870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 145bc201857cb4f5cab1d2c8b4b072b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1940524023 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 510504022, guid: 4408e8035af22437eba268101ddb8b04, type: 3}
   m_PrefabInstance: {fileID: 862832527731073456}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &2063874609 stripped
@@ -20934,6 +20986,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb9cac0913b83467d93cd43ae1aa6201, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  idleSpeed: 2
+  idleInertia: 0.2
 --- !u!1001 &862832527731073456
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20941,6 +20995,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 510504022, guid: 4408e8035af22437eba268101ddb8b04, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.493
+      objectReference: {fileID: 0}
+    - target: {fileID: 1794794356, guid: 4408e8035af22437eba268101ddb8b04, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 862832527107834563, guid: 4408e8035af22437eba268101ddb8b04, type: 3}
       propertyPath: m_Name
       value: Player
@@ -20989,7 +21051,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 510504023, guid: 4408e8035af22437eba268101ddb8b04, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 4408e8035af22437eba268101ddb8b04, type: 3}
 --- !u!1001 &6810722530811555867
 PrefabInstance:
@@ -21000,7 +21063,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6810722530499758235, guid: b0b8eb2accedd4cdea847c2b102f6da0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.7793913
+      value: 0.77939105
       objectReference: {fileID: 0}
     - target: {fileID: 6810722530499758235, guid: b0b8eb2accedd4cdea847c2b102f6da0, type: 3}
       propertyPath: m_LocalPosition.y
@@ -21068,7 +21131,7 @@ PrefabInstance:
       objectReference: {fileID: 999609690}
     - target: {fileID: 6810722531827183769, guid: b0b8eb2accedd4cdea847c2b102f6da0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.5036826
+      value: -1.5036829
       objectReference: {fileID: 0}
     - target: {fileID: 6810722531827183769, guid: b0b8eb2accedd4cdea847c2b102f6da0, type: 3}
       propertyPath: m_LocalPosition.y
@@ -21080,7 +21143,7 @@ PrefabInstance:
       objectReference: {fileID: 1241850475}
     - target: {fileID: 6810722531854940608, guid: b0b8eb2accedd4cdea847c2b102f6da0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.5036826
+      value: -1.5036829
       objectReference: {fileID: 0}
     - target: {fileID: 6810722531854940608, guid: b0b8eb2accedd4cdea847c2b102f6da0, type: 3}
       propertyPath: m_LocalPosition.y
@@ -21103,13 +21166,29 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1537177963, guid: a1b98571214174b43a6baff78099f94d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.086
+      objectReference: {fileID: 0}
+    - target: {fileID: 1537177963, guid: a1b98571214174b43a6baff78099f94d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.501
+      objectReference: {fileID: 0}
+    - target: {fileID: 1537177965, guid: a1b98571214174b43a6baff78099f94d, type: 3}
+      propertyPath: description
+      value: Hound's feet position, used for ground checking
+      objectReference: {fileID: 0}
     - target: {fileID: 2063874610, guid: a1b98571214174b43a6baff78099f94d, type: 3}
       propertyPath: target
       value: 
       objectReference: {fileID: 1548903870}
     - target: {fileID: 2063874618, guid: a1b98571214174b43a6baff78099f94d, type: 3}
+      propertyPath: feet
+      value: 
+      objectReference: {fileID: 1537177963}
+    - target: {fileID: 2063874618, guid: a1b98571214174b43a6baff78099f94d, type: 3}
       propertyPath: inertia
-      value: 0.4
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 2063874618, guid: a1b98571214174b43a6baff78099f94d, type: 3}
       propertyPath: baseSpeed
@@ -21130,7 +21209,7 @@ PrefabInstance:
     - target: {fileID: 2063874619, guid: a1b98571214174b43a6baff78099f94d, type: 3}
       propertyPath: groundCheckSensor.sensorCollider
       value: 
-      objectReference: {fileID: 1537177964}
+      objectReference: {fileID: 0}
     - target: {fileID: 2063874619, guid: a1b98571214174b43a6baff78099f94d, type: 3}
       propertyPath: groundCheckSensor.layersToSense.m_Bits
       value: 64
@@ -21211,5 +21290,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1537177964, guid: a1b98571214174b43a6baff78099f94d, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a1b98571214174b43a6baff78099f94d, type: 3}
