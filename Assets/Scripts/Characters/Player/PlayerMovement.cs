@@ -44,6 +44,9 @@ public class PlayerMovement : MonoBehaviour
 
     // Detect jumping
     InputJump();
+
+    // Detect climbing
+    InputClimb();
   }
 
   private void InputWalkAndDash()
@@ -111,12 +114,21 @@ public class PlayerMovement : MonoBehaviour
     if (!_groundMovement.IsGrounded()) yield break;
 
     // Start animation
-    _animationSync.Jump();
+    _animationSync.JumpAnimation();
 
     // Wait anticipation time
     yield return new WaitForSeconds(jumpAnticipation);
 
     // Jump
     _groundMovement.Jump(skipGroundCheck: true);
+  }
+
+  private void InputClimb()
+  {
+    // See if player inputs climbing keys
+    float frameClimb = Input.GetAxisRaw("Vertical");
+
+    // Forward them
+    if (Mathf.Abs(frameClimb) > Mathf.Epsilon) _groundMovement.Climb(frameClimb);
   }
 }

@@ -51,7 +51,7 @@ public class PlayerAnimationSync : MonoBehaviour
   }
 
   //=== Interface
-  public void Jump()
+  public void JumpAnimation()
   {
     // Set jump animation
     _animator.SetTrigger("Jump");
