@@ -26,6 +26,9 @@ public class PlayerMovement : MonoBehaviour
   // The dash multiplier application. If dashing, will be = dashSpeedMultiplier. If not, will be 1
   float activeDashModifier = 1f;
 
+  // Will hold the jump coroutine
+  Coroutine jumpCoroutine;
+
   //=== Refs
   GroundMovement _groundMovement;
   PlayerAnimationSync _animationSync;
@@ -105,7 +108,8 @@ public class PlayerMovement : MonoBehaviour
 
   private void InputJump()
   {
-    if (Input.GetButtonDown("Jump")) StartCoroutine(Jump());
+    // Don't jump if is already in a jump coroutine
+    if (Input.GetButtonDown("Jump") && jumpCoroutine == null) jumpCoroutine = StartCoroutine(Jump());
   }
 
   private IEnumerator Jump()
@@ -121,6 +125,9 @@ public class PlayerMovement : MonoBehaviour
 
     // Jump
     _groundMovement.Jump(skipGroundCheck: true);
+
+    // Release jump coroutine variable
+    jumpCoroutine = null;
   }
 
   private void InputClimb()
