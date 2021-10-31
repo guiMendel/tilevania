@@ -81,7 +81,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1537177963}
   - component: {fileID: 1537177965}
-  - component: {fileID: 1537177964}
   m_Layer: 10
   m_Name: Feet
   m_TagString: Untagged
@@ -97,7 +96,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1537177962}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.04, y: -0.509, z: 0}
+  m_LocalPosition: {x: 0.086, y: -0.501, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8428335305099256057}
@@ -115,33 +114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8e0514490ff74d3fa58854e7de359c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: Hound's sensor for whether it is grounded
---- !u!61 &1537177964
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1537177962}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.2, y: 0.2}
-  m_EdgeRadius: 0
+  description: Hound's feet position, used for ground checking
 --- !u!1 &2057955396
 GameObject:
   m_ObjectHideFlags: 0
@@ -233,6 +206,7 @@ GameObject:
   - component: {fileID: 2063874620}
   - component: {fileID: 2063874621}
   - component: {fileID: 2063874610}
+  - component: {fileID: 2063874622}
   m_Layer: 10
   m_Name: Hound
   m_TagString: Untagged
@@ -389,6 +363,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingState: 1
   stateKey: 
+  OnStateEnabled:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStateDisabled:
+    m_PersistentCalls:
+      m_Calls: []
   moveDurationMin: 0.5
   moveDurationMax: 2
   idleDurationMin: 1
@@ -417,8 +397,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a1e27d78e014a70b8279bb40c2cf5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseSpeed: 5
   invertFacingDirection: 1
+  baseSpeed: 4
+  inertia: 0.8
+  jumpPower: 10
+  groundLayers:
+    serializedVersion: 2
+    m_Bits: 64
+  feet: {fileID: 1537177963}
+  climbSpeed: 2
+  climbableLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  leaveClimbableImpulse: 5
+  upperClimbBoundCollider: {fileID: 0}
 --- !u!114 &2063874619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -508,6 +500,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingState: 0
   stateKey: 
+  OnStateEnabled:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStateDisabled:
+    m_PersistentCalls:
+      m_Calls: []
+  headsUpDelay: 0.5
 --- !u!114 &2063874610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -558,3 +557,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &2063874622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8428335305099256051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb9cac0913b83467d93cd43ae1aa6201, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  idleSpeed: 2
+  idleInertia: 0.2
