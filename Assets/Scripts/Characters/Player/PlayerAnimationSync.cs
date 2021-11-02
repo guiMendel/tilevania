@@ -70,16 +70,15 @@ public class PlayerAnimationSync : MonoBehaviour
     setAnimatorParameter(Mathf.Sign(yMovement));
   }
 
-  // Climbing states
-  void OnStartClimbingMessage()
-  {
-    _animator.SetBool("Climbing", true);
-  }
+  //=== Message Hooks
 
-  void OnStopClimbingMessage()
-  {
-    _animator.SetBool("Climbing", false);
-  }
+  // Climbing states
+  void OnStartClimbingMessage() => _animator.SetBool("Climbing", true);
+
+  void OnStopClimbingMessage() => _animator.SetBool("Climbing", false);
+
+  // Carry state
+  void OnGrabItemMessage() => _animator.SetBool("Carrying", true);
 
   //=== Interface
   public void JumpAnimation()
