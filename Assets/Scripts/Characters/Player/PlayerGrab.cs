@@ -16,6 +16,9 @@ public class PlayerGrab : MonoBehaviour
   [Tooltip("How far the player can grab items from")]
   public float grabRange;
 
+  //=== State
+  Transform grabbedItem;
+
   //=== Refs
   // Where the player's hands are
   Transform hands;
@@ -62,22 +65,35 @@ public class PlayerGrab : MonoBehaviour
 
   private void Grab(GameObject grabable)
   {
-    // Move object to hand's position: try to get a GrabAnchor position from it
-    Transform grabableAnchorTransform = grabable.transform.Find("GrabAnchor");
+    // Move object to hand's position
+    MoveToHand(grabable.transform);
+
+    // Avoid external forces while it's being held
+    grabable.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
+
+    // Stick it to the hands
+    grabable.transform.parent = hands;
+
+    // Register it
+    grabbedItem = grabable.transform;
+
+    // Raise message
+    SendMessage("OnGrabItemMessage", grabable);
+  }
+
+  private void MoveToHand(Transform grabable)
+  {
+    // Try to get anchor point
+    Transform grabableAnchorTransform = grabable.Find("GrabAnchor");
 
     // If can't find this child, use own object's position
-    if (grabableAnchorTransform == null) grabableAnchorTransform = grabable.transform;
+    if (grabableAnchorTransform == null) grabableAnchorTransform = grabable;
 
     // Get distance from hand
     Vector3 handDistance = grabableAnchorTransform.position - hands.position;
 
     // Move item this distance
-    grabable.transform.position -= handDistance;
-
-    // Create a joint between the grabable and player's hands
-    // handsJoint.connectedBody = grabable;
-    grabable.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
-    grabable.transform.parent = hands;
+    grabable.position -= handDistance;
   }
 
   // Draw grab range
