@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 // Deps
 [RequireComponent(typeof(Rigidbody2D))]
@@ -14,7 +15,15 @@ public class PlayerGrab : MonoBehaviour
   public LayerMask grabableLayers;
 
   [Tooltip("How far the player can grab items from")]
-  public float grabRange;
+  public float grabRange = 1f;
+
+  [Tooltip("The launch force of throwing an item")]
+  public Vector2 launchForce = new Vector2(10f, 2f);
+
+  [Tooltip("The launch torque possible value interval applied when throwing an item")]
+  [SerializeReference] float launchTorqueMin = -20f;
+  [SerializeReference] float launchTorqueMax = 20f;
+
 
   //=== State
   Transform grabbedItem;
@@ -41,13 +50,25 @@ public class PlayerGrab : MonoBehaviour
 
   private void Update()
   {
-    // Detect grab command
-    DetectGrab();
+    // Detect grab & throw commands
+    DetectInteraction();
   }
 
-  private void DetectGrab()
+  private void DetectInteraction()
   {
+    // Detect input
     if (!Input.GetButtonDown("Grab")) return;
+
+    // Throw if holding an item, otherwise grab
+    if (grabbedItem != null) Throw();
+    else AttemptGrab();
+  }
+
+  // Send message and let animation trigger call LaunchItem
+  private void Throw() => SendMessage("OnThrowItemMessage", grabbedItem);
+
+  private void AttemptGrab()
+  {
     // Check if there's any grabable items in range
     Collider2D grabable = Physics2D.OverlapBox(
       transform.position,
@@ -68,8 +89,17 @@ public class PlayerGrab : MonoBehaviour
     // Move object to hand's position
     MoveToHand(grabable.transform);
 
+    Rigidbody2D grabableRigidbody = grabable.GetComponent<Rigidbody2D>();
+
     // Avoid external forces while it's being held
-    grabable.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
+    grabableRigidbody.bodyType = RigidbodyType2D.Kinematic;
+
+    // Freeze it's rotation
+    grabableRigidbody.freezeRotation = true;
+
+    // Reset it's velocity
+    grabableRigidbody.velocity = Vector2.zero;
+    grabableRigidbody.angularVelocity = 0f;
 
     // Stick it to the hands
     grabable.transform.parent = hands;
@@ -83,6 +113,9 @@ public class PlayerGrab : MonoBehaviour
 
   private void MoveToHand(Transform grabable)
   {
+    // Reset item rotation
+    grabable.transform.rotation = Quaternion.identity;
+
     // Try to get anchor point
     Transform grabableAnchorTransform = grabable.Find("GrabAnchor");
 
@@ -94,11 +127,46 @@ public class PlayerGrab : MonoBehaviour
 
     // Move item this distance
     grabable.position -= handDistance;
+
   }
 
   // Draw grab range
   private void OnDrawGizmosSelected()
   {
     Gizmos.DrawWireCube(transform.position, Vector3.one * grabRange);
+  }
+
+
+  //=== Interface
+
+  // Launch the item being currently held
+  public void LaunchItem()
+  {
+    // Get it's rigidbody
+    Rigidbody2D itemRigidbody = grabbedItem.GetComponent<Rigidbody2D>();
+
+    // Make the item dynamic again
+    itemRigidbody.bodyType = RigidbodyType2D.Dynamic;
+
+    // Unfreeze it's rotation
+    itemRigidbody.freezeRotation = false;
+
+    // Release it from the hand
+    grabbedItem.transform.parent = null;
+
+    // Get force relative to facing direction
+    Vector2 relativeLaunchForce = new Vector2(launchForce.x * Mathf.Sign(transform.localScale.x), launchForce.y);
+
+    // Apply launch force
+    itemRigidbody.AddForce(relativeLaunchForce, ForceMode2D.Impulse);
+
+    // Get a random rotation speed (relative to facing direction)
+    float launchTorque = Random.Range(launchTorqueMin, launchTorqueMax) * -Mathf.Sign(transform.localScale.x);
+
+    // Apply random rotation
+    itemRigidbody.AddTorque(launchTorque, ForceMode2D.Impulse);
+
+    // Forget it
+    grabbedItem = null;
   }
 }
