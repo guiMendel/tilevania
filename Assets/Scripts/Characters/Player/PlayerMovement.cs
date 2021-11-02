@@ -21,6 +21,9 @@ public class PlayerMovement : MonoBehaviour
   [Tooltip("Time elapsed between player command to jump and actual jump, in seconds")]
   [SerializeField] float jumpAnticipation = 0.1f;
 
+  [Tooltip("The fraction of jump power the player has when encumbered (carrying something)")]
+  [Range(0f, 1f)] [SerializeField] float jumpEncumbranceModifier = 0.7f;
+
 
   //=== State
   // The dash multiplier application. If dashing, will be = dashSpeedMultiplier. If not, will be 1
@@ -28,6 +31,10 @@ public class PlayerMovement : MonoBehaviour
 
   // Will hold the jump coroutine
   Coroutine jumpCoroutine;
+
+  // Whether the player is unable to sprint and can only jump 1 unit
+  bool encumbered;
+
 
   //=== Refs
   GroundMovement _groundMovement;
@@ -70,7 +77,8 @@ public class PlayerMovement : MonoBehaviour
     if (Mathf.Abs(frameMovement) < Mathf.Epsilon) activeDashModifier = 1f;
 
     // If a movement key was pressed in this exact frame, trigger a coroutine that will detect a double press
-    if (Input.GetButtonDown("Horizontal")) StartCoroutine(DetectDoublePress());
+    // Skip this if encumbered
+    if (!encumbered && Input.GetButtonDown("Horizontal")) StartCoroutine(DetectDoublePress());
 
     return frameMovement * activeDashModifier;
   }
@@ -124,7 +132,10 @@ public class PlayerMovement : MonoBehaviour
     yield return new WaitForSeconds(jumpAnticipation);
 
     // Jump
-    _groundMovement.Jump(skipGroundCheck: true);
+    _groundMovement.Jump(
+      powerModifier: encumbered ? jumpEncumbranceModifier : 1f,
+      skipGroundCheck: true
+    );
 
     // Release jump coroutine variable
     jumpCoroutine = null;
@@ -132,10 +143,17 @@ public class PlayerMovement : MonoBehaviour
 
   private void InputClimb()
   {
+    // Forbid climbing if encumbered
+    if (encumbered) return;
+
     // See if player inputs climbing keys
     float frameClimb = Input.GetAxisRaw("Vertical");
 
     // Forward them
     if (Mathf.Abs(frameClimb) > Mathf.Epsilon) _groundMovement.Climb(frameClimb);
   }
+
+
+  //=== Message Hooks
+  void OnGrabItemMessage() => encumbered = true;
 }

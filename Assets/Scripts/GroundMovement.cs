@@ -237,7 +237,7 @@ public class GroundMovement : MonoBehaviour, MovementInterface
   }
 
   // Jump method
-  public void Jump(bool skipGroundCheck = false)
+  public void Jump(float powerModifier = 1f, bool skipGroundCheck = false)
   {
     // Ensure it's grounded or climbing
     if (!skipGroundCheck && !IsGrounded(allowClimbing: true)) return;
@@ -246,7 +246,7 @@ public class GroundMovement : MonoBehaviour, MovementInterface
     StopClimbing();
 
     // Add y velocity
-    _rigidbody.velocity = new Vector2(_rigidbody.velocity.y, jumpPower);
+    _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, jumpPower * powerModifier);
   }
 
   // Climb method
