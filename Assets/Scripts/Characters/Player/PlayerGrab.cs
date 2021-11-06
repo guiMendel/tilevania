@@ -77,8 +77,18 @@ public class PlayerGrab : MonoBehaviour
       grabableLayers
     );
 
-    // Ensure we got an item and it has rigidbody
-    if (grabable == null || grabable.GetComponent<Rigidbody2D>() == null) return;
+    // Ensure we got an item & it has rigidbody
+    if (
+      grabable == null
+      || grabable.GetComponent<Rigidbody2D>() == null
+    ) return;
+
+    // Ensure it's a projectile
+    if (grabable.GetComponent<PlayerProjectile>() == null)
+    {
+      Debug.LogError("Tried to grab an item that doesn't contain a PlayerProjectile script");
+      return;
+    }
 
     // Grab it
     Grab(grabable.gameObject);
@@ -166,8 +176,8 @@ public class PlayerGrab : MonoBehaviour
     // Apply random rotation
     itemRigidbody.AddTorque(launchTorque, ForceMode2D.Impulse);
 
-    // Make it a projectile
-    grabbedItem.AddComponent<PlayerProjectile>();
+    // Make it an active projectile
+    grabbedItem.GetComponent<PlayerProjectile>().active = true;
 
     // Forget it
     grabbedItem = null;
