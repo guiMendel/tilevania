@@ -166,7 +166,13 @@ public class PlayerGrab : MonoBehaviour
     // Apply random rotation
     itemRigidbody.AddTorque(launchTorque, ForceMode2D.Impulse);
 
+    // Make it a projectile
+    grabbedItem.AddComponent<PlayerProjectile>();
+
     // Forget it
     grabbedItem = null;
+
+    // Send message
+    SendMessage("OnItemThrownMessage");
   }
 }

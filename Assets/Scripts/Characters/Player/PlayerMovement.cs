@@ -157,5 +157,5 @@ public class PlayerMovement : MonoBehaviour
   //=== Message Hooks
   void OnGrabItemMessage() => encumbered = true;
 
-  void OnThrowItemMessage() => encumbered = false;
+  void OnItemThrownMessage() => encumbered = false;
 }

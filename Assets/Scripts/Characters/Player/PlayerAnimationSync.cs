@@ -80,11 +80,9 @@ public class PlayerAnimationSync : MonoBehaviour
   // Carry state
   void OnGrabItemMessage() => _animator.SetBool("Carrying", true);
 
-  void OnThrowItemMessage()
-  {
-    _animator.SetBool("Carrying", false);
-    _animator.SetTrigger("Throw");
-  }
+  void OnThrowItemMessage() => _animator.SetTrigger("Throw");
+
+  void OnItemThrownMessage() => _animator.SetBool("Carrying", false);
 
   //=== Interface
   public void JumpAnimation()
