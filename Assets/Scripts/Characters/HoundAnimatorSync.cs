@@ -44,4 +44,7 @@ public class HoundAnimatorSync : MonoBehaviour
     // Detect significant vertical movement
     _animator.SetBool("Airborne", yMovement > 0.1f);
   }
+
+  //=== Messages
+  void OnDeathMessage() => _animator.SetBool("Dead", true);
 }

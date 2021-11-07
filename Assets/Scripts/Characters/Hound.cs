@@ -80,4 +80,16 @@ public class Hound : MonoBehaviour
       if (_sharedState.IsStateActive(_chaseState)) _groundMovement.Jump();
     });
   }
+
+  //=== Messages
+
+  void OnDeathMessage()
+  {
+    // Disable all scripts
+    _chaseState.enabled = false;
+    _idleWanderState.enabled = false;
+
+    // Disable threat
+    gameObject.layer = LayerMask.NameToLayer("ImmovableObject");
+  }
 }

@@ -179,6 +179,9 @@ public class PlayerGrab : MonoBehaviour
     // Make it an active projectile
     grabbedItem.GetComponent<PlayerProjectile>().active = true;
 
+    // Put it in the right layer
+    grabbedItem.gameObject.layer = LayerMask.NameToLayer("PlayerProjectile");
+
     // Forget it
     grabbedItem = null;
 

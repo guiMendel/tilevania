@@ -18,11 +18,37 @@ public class DeathSensor : MonoBehaviour
   [Tooltip("How much character gets launched up on death. Is applied in addition to normal kick force")]
   public float upwardsExtraKick = 2f;
 
+  [Tooltip("Whether to try to reach out to a movement component and make it stand still, after death")]
+  public bool holdPositionAfterDeath = true;
+
+  //=== State
+  bool triggered;
+
+  private void Update()
+  {
+    if (triggered && holdPositionAfterDeath) HoldPosition();
+  }
+
+  private void HoldPosition()
+  {
+    MovementInterface movement = GetComponent<MovementInterface>();
+
+    // If it's ground movement, ensure it's grounded
+    if (movement is GroundMovement)
+    {
+      if (!(movement as GroundMovement).IsGrounded()) return;
+    }
+
+    // Stay put
+    movement.Move(0f);
+  }
+
   private void OnCollisionEnter2D(Collision2D other)
   {
     // Check if is a death layer
     if (threatLayers == (threatLayers | 1 << other.gameObject.layer))
     {
+      triggered = true;
       Die();
       LaunchAwayFrom(other.transform);
     }
