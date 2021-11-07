@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+// Deps
+[RequireComponent(typeof(SpriteRenderer))]
+
 public class PlayerProjectile : MonoBehaviour
 {
   //=== Params
@@ -15,6 +18,12 @@ public class PlayerProjectile : MonoBehaviour
 
   [Tooltip("Whether it's going to trigger damage on next collision")]
   public bool active;
+
+  [Tooltip("The particles that are emitted on item collision")]
+  public GameObject breakParticles;
+
+  [Tooltip("How long it takes to erase self after collision")]
+  public float eraseTime;
 
   private void OnCollisionEnter2D(Collision2D other)
   {
@@ -30,8 +39,17 @@ public class PlayerProjectile : MonoBehaviour
 
   private void Trigger()
   {
-    // Delete self
+    // Trigger particles
+    GameObject particles = Instantiate(breakParticles, transform.position, Quaternion.identity) as GameObject;
+
+    // Delete particles
+    Destroy(particles, eraseTime);
+
     Destroy(gameObject);
+
+    // Hide self
+    GetComponent<SpriteRenderer>().enabled = false;
+    GetComponent<Collider2D>().enabled = false;
   }
 
   // Draw it's range
