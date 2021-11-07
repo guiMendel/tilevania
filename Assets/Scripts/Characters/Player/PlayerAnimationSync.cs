@@ -84,6 +84,9 @@ public class PlayerAnimationSync : MonoBehaviour
 
   void OnItemThrownMessage() => _animator.SetBool("Carrying", false);
 
+  // Death
+  void OnDeathMessage() => _animator.SetBool("Dead", true);
+
   //=== Interface
   public void JumpAnimation()
   {

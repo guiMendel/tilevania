@@ -46,10 +46,6 @@ public class PlayerProjectile : MonoBehaviour
     Destroy(particles, eraseTime);
 
     Destroy(gameObject);
-
-    // Hide self
-    GetComponent<SpriteRenderer>().enabled = false;
-    GetComponent<Collider2D>().enabled = false;
   }
 
   // Draw it's range

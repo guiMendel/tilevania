@@ -35,6 +35,9 @@ public class PlayerMovement : MonoBehaviour
   // Whether the player is unable to sprint and can only jump 1 unit
   bool encumbered;
 
+  // Whether is alive
+  bool alive = true;
+
 
   //=== Refs
   GroundMovement _groundMovement;
@@ -49,6 +52,13 @@ public class PlayerMovement : MonoBehaviour
   // Update is called once per frame
   void Update()
   {
+    // If not alive, just stand still
+    if (!alive)
+    {
+      HoldPosition();
+      return;
+    }
+
     // Detect walking & dashing
     InputWalkAndDash();
 
@@ -57,6 +67,11 @@ public class PlayerMovement : MonoBehaviour
 
     // Detect climbing
     InputClimb();
+  }
+
+  private void HoldPosition()
+  {
+    if (_groundMovement.IsGrounded()) _groundMovement.Move(0f);
   }
 
   private void InputWalkAndDash()
@@ -158,4 +173,11 @@ public class PlayerMovement : MonoBehaviour
   void OnGrabItemMessage() => encumbered = true;
 
   void OnItemThrownMessage() => encumbered = false;
+
+  // Disable this script on death,
+  void OnDeathMessage()
+  {
+    _groundMovement.inertia = 0.8f;
+    alive = false;
+  }
 }
