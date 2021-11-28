@@ -51,6 +51,17 @@ public class DeathSensor : MonoBehaviour
     // Check if is a death layer
     if (threatLayers == (threatLayers | 1 << other.gameObject.layer))
     {
+      print(other.gameObject.name);
+      GetKilledBy(other.transform);
+    }
+  }
+
+  private void OnTriggerEnter2D(Collider2D other)
+  {
+    // Check if is a death layer
+    if (threatLayers == (threatLayers | 1 << other.gameObject.layer))
+    {
+      print(other.gameObject.name);
       GetKilledBy(other.transform);
     }
   }

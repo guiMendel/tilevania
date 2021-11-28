@@ -40,7 +40,6 @@ public class PlayerProjectile : MonoBehaviour
     // Check if object is in target layer mask
     if (((int)contactLayers) == (contactLayers | (1 << other.gameObject.layer)))
     {
-      print(other.gameObject.name);
       Trigger();
     }
   }
