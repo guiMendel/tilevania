@@ -21,6 +21,9 @@ public class DeathSensor : MonoBehaviour
   [Tooltip("Whether to try to reach out to a movement component and make it stand still, after death")]
   public bool holdPositionAfterDeath = true;
 
+  [Tooltip("Offset center of mass up by this amount when calculating death kick direction")]
+  public float kickHeightOffest = 0f;
+
   //=== State
   bool triggered;
 
@@ -59,8 +62,11 @@ public class DeathSensor : MonoBehaviour
     // Ignore if no kick is to be applied
     if (deathKick < Mathf.Epsilon) return;
 
+    // Treat other's position as a little below it's actual position
+    Vector3 position = new Vector3(other.position.x, other.position.y - kickHeightOffest);
+
     // Get direction
-    Vector3 sourceDirection = (other.position - transform.position).normalized;
+    Vector3 sourceDirection = (position - transform.position).normalized;
 
     // Rotate direction
     Vector3 direction = Quaternion.Euler(0, 0, 180) * sourceDirection;

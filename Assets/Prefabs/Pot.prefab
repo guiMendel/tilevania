@@ -157,7 +157,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contactLayers:
     serializedVersion: 2
-    m_Bits: 1088
+    m_Bits: 17472
   damageRange: 1
   active: 0
   breakParticles: {fileID: 6434889959611411202, guid: b82a9daab3bf64ea29dbca6fd95d533b, type: 3}
