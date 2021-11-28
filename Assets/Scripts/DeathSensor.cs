@@ -51,9 +51,7 @@ public class DeathSensor : MonoBehaviour
     // Check if is a death layer
     if (threatLayers == (threatLayers | 1 << other.gameObject.layer))
     {
-      triggered = true;
-      Die();
-      LaunchAwayFrom(other.transform);
+      GetKilledBy(other.transform);
     }
   }
 
@@ -79,5 +77,14 @@ public class DeathSensor : MonoBehaviour
   {
     // Send message
     SendMessage("OnDeathMessage");
+  }
+
+  //=== Interface
+
+  public void GetKilledBy(Transform other)
+  {
+    triggered = true;
+    Die();
+    LaunchAwayFrom(other);
   }
 }
