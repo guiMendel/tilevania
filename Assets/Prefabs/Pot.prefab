@@ -158,10 +158,13 @@ MonoBehaviour:
   contactLayers:
     serializedVersion: 2
     m_Bits: 17472
-  damageRange: 1
   active: 0
   breakParticles: {fileID: 6434889959611411202, guid: b82a9daab3bf64ea29dbca6fd95d533b, type: 3}
   eraseTime: 5
+  damageRange: 2
+  damageLayers:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!1 &4829522666449029693
 GameObject:
   m_ObjectHideFlags: 0

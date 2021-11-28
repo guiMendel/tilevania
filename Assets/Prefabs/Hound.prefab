@@ -207,6 +207,7 @@ GameObject:
   - component: {fileID: 2063874621}
   - component: {fileID: 2063874610}
   - component: {fileID: 2063874622}
+  - component: {fileID: 1626485732}
   m_Layer: 10
   m_Name: Hound
   m_TagString: Untagged
@@ -571,3 +572,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   idleSpeed: 2
   idleInertia: 0.2
+--- !u!114 &1626485732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8428335305099256051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0090ca7cb7c7f42b19d10522227d8e10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  threatLayers:
+    serializedVersion: 2
+    m_Bits: 8192
+  deathKick: 10
+  upwardsExtraKick: 5
+  holdPositionAfterDeath: 1
+  kickHeightOffest: 1

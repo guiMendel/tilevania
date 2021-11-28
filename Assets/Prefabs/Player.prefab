@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 647661248}
   - component: {fileID: 647661250}
   - component: {fileID: 647661249}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Upper Climb Limit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -103,6 +103,72 @@ MonoBehaviour:
   description: Limits how much the player can hang off of a climbable object. When
     this collider isn't in contact with the climbable anymore, it can't climb up
     anymore.
+--- !u!1 &1514807500
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1514807501}
+  - component: {fileID: 1514807502}
+  - component: {fileID: 1514807504}
+  m_Layer: 8
+  m_Name: Hands
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1514807501
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1514807500}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.3, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 862832527107834566}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1514807502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1514807500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8e0514490ff74d3fa58854e7de359c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  description: Where items being grabbed should hover
+--- !u!50 &1514807504
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1514807500}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &862832527107834563
 GameObject:
   m_ObjectHideFlags: 0
@@ -119,6 +185,8 @@ GameObject:
   - component: {fileID: 1548903875}
   - component: {fileID: 1548903876}
   - component: {fileID: 1548903877}
+  - component: {fileID: 1548903871}
+  - component: {fileID: 1548903878}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -139,6 +207,7 @@ Transform:
   m_Children:
   - {fileID: 510504022}
   - {fileID: 647661248}
+  - {fileID: 1514807501}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -291,6 +360,7 @@ MonoBehaviour:
   dashTolerance: 500
   dashSpeedMultiplier: 2
   jumpAnticipation: 0.16
+  jumpEncumbranceModifier: 0.7
 --- !u!114 &1548903877
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -303,3 +373,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 145bc201857cb4f5cab1d2c8b4b072b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1548903871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 862832527107834563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99c5cc81f924b49d3b789a206ac2ff59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grabableLayers:
+    serializedVersion: 2
+    m_Bits: 4096
+  grabRange: 1
+  launchForce: {x: 10, y: 6}
+  launchTorqueMin: 0.5
+  launchTorqueMax: 1
+--- !u!114 &1548903878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 862832527107834563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0090ca7cb7c7f42b19d10522227d8e10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  threatLayers:
+    serializedVersion: 2
+    m_Bits: 3072
+  deathKick: 10
+  upwardsExtraKick: 8
+  holdPositionAfterDeath: 1
+  kickHeightOffest: 0
