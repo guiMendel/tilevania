@@ -17,8 +17,11 @@ public class IdleWanderState : State
 
   // State
 
-  // It's current movement
-  float movement = 0f;
+  // It's current movement direction
+  Quaternion movementDirection;
+
+  // Whether is moving or not
+  bool moving;
 
   // Refs
   Movement movementComponent;
@@ -37,7 +40,11 @@ public class IdleWanderState : State
   protected override void OnUpdate()
   {
     // Emit move event
-    if (isCurrentState) movementComponent.Move(Vector2.right * movement);
+    if (isCurrentState) movementComponent.Move(
+      moving
+        ? (Vector2)(movementDirection * (Vector2.right))
+        : Vector2.zero
+      );
   }
 
   private IEnumerator Wander()
@@ -49,8 +56,8 @@ public class IdleWanderState : State
       WanderNextIteration();
 
       // Decide when to change state
-      float min = movement != 0f ? moveDurationMin : idleDurationMin;
-      float max = movement != 0f ? moveDurationMax : idleDurationMax;
+      float min = moving ? moveDurationMin : idleDurationMin;
+      float max = moving ? moveDurationMax : idleDurationMax;
 
       float stateChangeTimeout = Random.Range(min, max);
 
@@ -64,19 +71,19 @@ public class IdleWanderState : State
   private void WanderNextIteration()
   {
     // Change movement
-    movement = movement == 0f ? 1f : 0f;
+    moving = !moving;
 
-    // Randomly switch direction
-    if (Random.value < 0.5f) FlipMovementDirection();
+    // Change direction
+    if (moving) ChangeDirection();
   }
 
   private void Disable()
   {
     // When done, ensure movement has stopped
-    movement = 0f;
+    moving = false;
 
     // Erase movement
-    movementComponent.Move(Vector2.right * movement);
+    movementComponent.Move(Vector2.zero);
   }
 
   // Sets this as the current state and starts emitting events
@@ -91,11 +98,14 @@ public class IdleWanderState : State
   // Interface
 
   // Switches movement direction
-  public void FlipMovementDirection()
+  public void ChangeDirection()
   {
     if (!isCurrentState) return;
 
-    movement = -movement;
-    // if (movement != 0) movementComponent.SetFacingDirection(movement);
+    // Pick a random angle to move in
+    float moveAngle = Random.Range(0, 360);
+
+    // Register this direction
+    movementDirection = Quaternion.Euler(0, 0, moveAngle);
   }
 }
