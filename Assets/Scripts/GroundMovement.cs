@@ -22,6 +22,12 @@ public class GroundMovement : Movement
   [Tooltip("The position of the character's feet")]
   [SerializeField] Transform feet;
 
+  [Tooltip("Whether to change inertia value when airborne")]
+  [SerializeField] bool airborneInertiaEffect = true;
+
+  [Tooltip("Movement inertia when airborne")]
+  [Range(0f, 1f)] [SerializeField] float airborneInertia = 0.7f;
+
   [Header("Climbing")]
   [Tooltip("Climb speed")]
   [SerializeField] float climbSpeed = 2f;
@@ -40,6 +46,9 @@ public class GroundMovement : Movement
   // Stores the initial values of gravityscale
   float defaultGravityScale;
 
+  // Holds the default inertia
+  float defaultInertia;
+
   // The climb coroutine
   Coroutine climbCoroutine;
 
@@ -51,6 +60,21 @@ public class GroundMovement : Movement
   {
     // Get gravity scale
     defaultGravityScale = _rigidbody.gravityScale;
+
+    defaultInertia = inertia;
+  }
+
+  private void Update()
+  {
+    // Detect airborne
+    DetectAirborne();
+  }
+
+  private void DetectAirborne()
+  {
+    // When airborne, increase inertia
+    if (airborneInertiaEffect) inertia = IsGrounded(allowClimbing: true) ? defaultInertia : airborneInertia;
+    if (airborneInertiaEffect && gameObject.name == "Player") print(inertia);
   }
 
   // Rotates movement to the sides and only then applies inertia
