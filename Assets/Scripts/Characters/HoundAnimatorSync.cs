@@ -30,7 +30,7 @@ public class HoundAnimatorSync : MonoBehaviour
   private void DetectMovement()
   {
     // Detect x movement (exerted by the hound, not external entities)
-    float xMovement = Mathf.Abs(_groundMovement.GetLastFrameMovement());
+    float xMovement = _groundMovement.GetLastFrameMovement().magnitude;
 
     // Update animation
     _animator.SetBool("Running", xMovement > 0.05f);

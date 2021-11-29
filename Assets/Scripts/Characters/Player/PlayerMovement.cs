@@ -68,7 +68,7 @@ public class PlayerMovement : MonoBehaviour
     frameMovement = HandleDashing(frameMovement);
 
     // Apply movement
-    _groundMovement.Move(frameMovement);
+    _groundMovement.Move(Vector2.right * frameMovement);
   }
 
   private float HandleDashing(float frameMovement)

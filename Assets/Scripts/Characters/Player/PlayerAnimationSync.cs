@@ -26,7 +26,7 @@ public class PlayerAnimationSync : MonoBehaviour
   private void DetectHorizontalMovement()
   {
     // Detect x movement (exerted by the player, not external entities)
-    float xMovement = Mathf.Abs(_groundMovement.GetLastFrameMovement());
+    float xMovement = _groundMovement.GetLastFrameMovement().magnitude;
 
     // Update animation
     _animator.SetBool("Walking", xMovement > 0.05f);

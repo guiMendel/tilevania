@@ -34,7 +34,7 @@ public class DeathSensor : MonoBehaviour
 
   private void HoldPosition()
   {
-    MovementInterface movement = GetComponent<MovementInterface>();
+    Movement movement = GetComponent<Movement>();
 
     // If it's ground movement, ensure it's grounded
     if (movement is GroundMovement)
@@ -43,7 +43,7 @@ public class DeathSensor : MonoBehaviour
     }
 
     // Stay put
-    movement.Move(0f);
+    movement.Move(Vector2.zero);
   }
 
   private void OnCollisionEnter2D(Collision2D other)

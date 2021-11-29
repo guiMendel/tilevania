@@ -21,12 +21,12 @@ public class IdleWanderState : State
   float movement = 0f;
 
   // Refs
-  MovementInterface movementComponent;
+  Movement movementComponent;
 
   protected override void OnAwake()
   {
     // Get refs
-    movementComponent = GetComponent<MovementInterface>();
+    movementComponent = GetComponent<Movement>();
 
     if (movementComponent == null)
     {
@@ -37,7 +37,7 @@ public class IdleWanderState : State
   protected override void OnUpdate()
   {
     // Emit move event
-    if (isCurrentState) movementComponent.Move(movement);
+    if (isCurrentState) movementComponent.Move(Vector2.right * movement);
   }
 
   private IEnumerator Wander()
@@ -76,7 +76,7 @@ public class IdleWanderState : State
     movement = 0f;
 
     // Erase movement
-    movementComponent.Move(movement);
+    movementComponent.Move(Vector2.right * movement);
   }
 
   // Sets this as the current state and starts emitting events
@@ -94,8 +94,8 @@ public class IdleWanderState : State
   public void FlipMovementDirection()
   {
     if (!isCurrentState) return;
-    
+
     movement = -movement;
-    if (movement != 0) movementComponent.SetFacingDirection(movement);
+    // if (movement != 0) movementComponent.SetFacingDirection(movement);
   }
 }

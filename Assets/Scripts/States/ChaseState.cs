@@ -20,12 +20,12 @@ public class ChaseState : State
   Coroutine headsUpCoroutine;
 
   //=== Refs
-  MovementInterface movementComponent;
+  Movement movementComponent;
 
   protected override void OnAwake()
   {
     // Get refs
-    movementComponent = GetComponent<MovementInterface>();
+    movementComponent = GetComponent<Movement>();
 
     if (movementComponent == null)
     {
@@ -55,11 +55,8 @@ public class ChaseState : State
 
   private void Chase()
   {
-    // Get target direction
-    float direction = Mathf.Sign(currentTarget.x - transform.position.x);
-
     // Move towards target
-    movementComponent.Move(direction);
+    movementComponent.Move((currentTarget - (Vector2)(transform.position)).normalized);
   }
 
   // Waits the configured time and then sets the target for chase
@@ -81,5 +78,10 @@ public class ChaseState : State
     currentTarget = target;
 
     if (!isCurrentState) Enable();
+  }
+
+  private void OnDrawGizmos()
+  {
+    Gizmos.DrawLine(transform.position, currentTarget);
   }
 }
