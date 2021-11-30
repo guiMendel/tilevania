@@ -66,6 +66,8 @@ public class PlayerProjectile : MonoBehaviour
     // For each target hit, get it's death sensor component and trigger it's damage
     foreach (Collider2D enemy in enemiesInRange)
     {
+      print(enemy.gameObject.name);
+
       // Get it's death sensor
       DeathSensor enemyDeathSensor = enemy.GetComponent<DeathSensor>();
 

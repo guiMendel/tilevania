@@ -74,7 +74,6 @@ public class GroundMovement : Movement
   {
     // When airborne, increase inertia
     if (airborneInertiaEffect) inertia = IsGrounded(allowClimbing: true) ? defaultInertia : airborneInertia;
-    if (airborneInertiaEffect && gameObject.name == "Player") print(inertia);
   }
 
   // Rotates movement to the sides and only then applies inertia

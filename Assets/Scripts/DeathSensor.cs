@@ -36,6 +36,8 @@ public class DeathSensor : MonoBehaviour
   {
     Movement movement = GetComponent<Movement>();
 
+    if (movement == null) return;
+
     // If it's ground movement, ensure it's grounded
     if (movement is GroundMovement)
     {

@@ -164,7 +164,7 @@ MonoBehaviour:
   damageRange: 2
   damageLayers:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 33792
 --- !u!1 &4829522666449029693
 GameObject:
   m_ObjectHideFlags: 0
