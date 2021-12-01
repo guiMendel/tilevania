@@ -53,7 +53,6 @@ public class DeathSensor : MonoBehaviour
     // Check if is a death layer
     if (threatLayers == (threatLayers | 1 << other.gameObject.layer))
     {
-      print(other.gameObject.name);
       GetKilledBy(other.transform);
     }
   }
@@ -63,7 +62,6 @@ public class DeathSensor : MonoBehaviour
     // Check if is a death layer
     if (threatLayers == (threatLayers | 1 << other.gameObject.layer))
     {
-      print(other.gameObject.name);
       GetKilledBy(other.transform);
     }
   }

@@ -5,19 +5,17 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 // Deps
-[RequireComponent(typeof(SharedState))]
-[RequireComponent(typeof(CollisionSensor))]
-[RequireComponent(typeof(GroundMovement))]
+[RequireComponent(typeof(AirborneMovement))]
 [RequireComponent(typeof(ChaseState))]
 [RequireComponent(typeof(IdleWanderState))]
 
-public class Hound : MonoBehaviour
+public class Drake : MonoBehaviour
 {
   //=== Params
-  [Tooltip("Movement baseSpeed when in idle state")]
+  [Tooltip("Multiplier applied to the movement baseSpeed when in idle state")]
   [SerializeField] float idleSpeed = 2f;
 
-  [Tooltip("Movement inertia when in idle state")]
+  [Tooltip("Multiplier applied to the movement inertia when in idle state")]
   [SerializeField] float idleInertia = 0.2f;
 
   //=== State
@@ -28,56 +26,39 @@ public class Hound : MonoBehaviour
   float defaultInertia;
 
   //=== Refs
-  SharedState _sharedState;
-  CollisionSensor _collisionSensor;
-  GroundMovement _groundMovement;
+  AirborneMovement _movement;
   ChaseState _chaseState;
   IdleWanderState _idleWanderState;
 
   private void Awake()
   {
-    _sharedState = GetComponent<SharedState>();
-    _collisionSensor = GetComponent<CollisionSensor>();
-    _groundMovement = GetComponent<GroundMovement>();
+    _movement = GetComponent<AirborneMovement>();
     _chaseState = GetComponent<ChaseState>();
     _idleWanderState = GetComponent<IdleWanderState>();
   }
 
   private void Start()
   {
-    SetUpChasingWallJump();
-
     SetUpIdleMovementModifiers();
   }
 
   private void SetUpIdleMovementModifiers()
   {
-    defaultBaseSpeed = _groundMovement.baseSpeed;
-    defaultInertia = _groundMovement.inertia;
+    defaultBaseSpeed = _movement.baseSpeed;
+    defaultInertia = _movement.inertia;
 
     // When idle, reduce speed & inertia
     _idleWanderState.OnStateEnabled.AddListener(() =>
     {
-      _groundMovement.baseSpeed = idleSpeed;
-      _groundMovement.inertia = idleInertia;
+      _movement.baseSpeed = idleSpeed;
+      _movement.inertia = idleInertia;
     });
 
     // When not idle, return speed & inertia back to normal
     _idleWanderState.OnStateDisabled.AddListener(() =>
     {
-      _groundMovement.baseSpeed = defaultBaseSpeed;
-      _groundMovement.inertia = defaultInertia;
-    });
-  }
-
-  private void SetUpChasingWallJump()
-  {
-    // When chasing, jump whenever facing a wall
-    var wallSensor = _collisionSensor.GetSensorByGameObjectName("Wall Sensor");
-
-    wallSensor.OnSensorStay.AddListener(() =>
-    {
-      if (_sharedState.IsStateActive(_chaseState)) _groundMovement.Jump();
+      _movement.baseSpeed = defaultBaseSpeed;
+      _movement.inertia = defaultInertia;
     });
   }
 
