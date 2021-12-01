@@ -79,9 +79,4 @@ public class ChaseState : State
 
     if (!isCurrentState) Enable();
   }
-
-  private void OnDrawGizmos()
-  {
-    Gizmos.DrawLine(transform.position, currentTarget);
-  }
 }
