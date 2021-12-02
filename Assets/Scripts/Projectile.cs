@@ -39,7 +39,7 @@ public class Projectile : MonoBehaviour
   public Transform homingTarget;
 
   [Tooltip("Amount of homing control. 0 means no homing, 1 means perfect stirring")]
-  public float homingControl;
+  [Range(0, 1)] public float homingControl;
 
 
   //=== Refs
@@ -49,6 +49,29 @@ public class Projectile : MonoBehaviour
   private void Awake()
   {
     _rigidbody = GetComponent<Rigidbody2D>();
+  }
+
+  private void Update()
+  {
+    ChaseTarget();
+  }
+
+  // Adjust direction to track target
+  private void ChaseTarget()
+  {
+    if (homingTarget == null || homingControl < Mathf.Epsilon) return;
+
+    // Get target direction
+    Vector2 targetDirection = homingTarget.position - transform.position;
+
+    // Get  direction difference, and make it proportional do homing control
+    Vector2 directionDifference = (_rigidbody.velocity.normalized - targetDirection.normalized) * homingControl;
+
+    // Get the new direction
+    Vector2 newDirection = _rigidbody.velocity.normalized - directionDifference;
+
+    // Set the new speed
+    _rigidbody.velocity = newDirection.normalized * _rigidbody.velocity.magnitude;
   }
 
   private void OnCollisionEnter2D(Collision2D other)

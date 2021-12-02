@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 63001236}
   - component: {fileID: 63001237}
   - component: {fileID: 63001240}
+  - component: {fileID: 1849397763}
   m_Layer: 10
   m_Name: Drake
   m_TagString: Untagged
@@ -192,7 +193,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   idleSpeed: 3
   idleInertia: 0.6
-  fireRange: 6
+  fireRange: 7
 --- !u!114 &63001233
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -249,7 +250,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   invertFacingDirection: 1
   sightAngle: 85
-  sightRange: 6
+  sightRange: 9
   target: {fileID: 0}
   blockingLayers:
     serializedVersion: 2
@@ -325,6 +326,31 @@ MonoBehaviour:
   upwardsExtraKick: 5
   holdPositionAfterDeath: 1
   kickHeightOffest: 0
+--- !u!114 &1849397763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4020542983950415564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 660c85e2e08cb4c98bde79884e70ee3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startingState: 0
+  stateKey: 
+  OnStateEnabled:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStateDisabled:
+    m_PersistentCalls:
+      m_Calls: []
+  fireCooldown: 3
+  projectilePrefab: {fileID: 7739586463649102783, guid: 253b5364f10f640e49d4f5552a46c280, type: 3}
+  launchSource: {fileID: 2410600081671514543}
+  preferredDistance: 5
+  moveSpeedMultiplier: 0.3
 --- !u!1 &6867050646282515659
 GameObject:
   m_ObjectHideFlags: 0

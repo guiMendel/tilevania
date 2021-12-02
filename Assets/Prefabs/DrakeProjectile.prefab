@@ -119,7 +119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b85c2cf249fa437f88043c4e4003734, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  launchImpulse: 2
+  launchImpulse: 1
   contactLayers:
     serializedVersion: 2
     m_Bits: 33088
@@ -131,7 +131,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   homingTarget: {fileID: 0}
-  homingControl: 0
+  homingControl: 0.05
 --- !u!58 &7739586463649102771
 CircleCollider2D:
   m_ObjectHideFlags: 0
