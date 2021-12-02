@@ -18,7 +18,10 @@ public class PlayerGrab : MonoBehaviour
   public float grabRange = 1f;
 
   [Tooltip("The launch force of throwing an item")]
-  public Vector2 launchForce = new Vector2(10f, 2f);
+  public float launchImpulse = 10f;
+
+  [Tooltip("The launch angle when throwing an item")]
+  public float launchAngle = 30;
 
   [Tooltip("The launch torque possible value interval applied when throwing an item")]
   [SerializeReference] float launchTorqueMin = -20f;
@@ -26,7 +29,7 @@ public class PlayerGrab : MonoBehaviour
 
 
   //=== State
-  Transform grabbedItem;
+  Projectile grabbedItem;
 
   //=== Refs
   // Where the player's hands are
@@ -77,29 +80,29 @@ public class PlayerGrab : MonoBehaviour
       grabableLayers
     );
 
+    // Get projectile instance
+    Projectile itemProjectile = grabable?.GetComponent<Projectile>();
+
     // Ensure we got an item & it has rigidbody
     if (
       grabable == null
+      || itemProjectile == null
       || grabable.GetComponent<Rigidbody2D>() == null
     ) return;
 
-    // Ensure it's a projectile
-    if (grabable.GetComponent<PlayerProjectile>() == null)
-    {
-      Debug.LogError("Tried to grab an item that doesn't contain a PlayerProjectile script");
-      return;
-    }
-
     // Grab it
-    Grab(grabable.gameObject);
+    Grab(itemProjectile);
   }
 
-  private void Grab(GameObject grabable)
+  private void Grab(Projectile grabable)
   {
-    // Move object to hand's position
-    MoveToHand(grabable.transform);
+    // Register it
+    grabbedItem = grabable;
 
-    Rigidbody2D grabableRigidbody = grabable.GetComponent<Rigidbody2D>();
+    // Move object to hand's position
+    MoveToHand(grabbedItem.transform);
+
+    Rigidbody2D grabableRigidbody = grabbedItem.GetComponent<Rigidbody2D>();
 
     // Avoid external forces while it's being held
     grabableRigidbody.bodyType = RigidbodyType2D.Kinematic;
@@ -112,13 +115,10 @@ public class PlayerGrab : MonoBehaviour
     grabableRigidbody.angularVelocity = 0f;
 
     // Stick it to the hands
-    grabable.transform.parent = hands;
-
-    // Register it
-    grabbedItem = grabable.transform;
+    grabbedItem.transform.parent = hands;
 
     // Raise message
-    SendMessage("OnGrabItemMessage", grabable);
+    SendMessage("OnGrabItemMessage", grabbedItem);
   }
 
   private void MoveToHand(Transform grabable)
@@ -164,11 +164,14 @@ public class PlayerGrab : MonoBehaviour
     // Release it from the hand
     grabbedItem.transform.parent = null;
 
-    // Get force relative to facing direction
-    Vector2 relativeLaunchForce = new Vector2(launchForce.x * Mathf.Sign(transform.localScale.x), launchForce.y);
+    // Set it's impulse
+    grabbedItem.launchImpulse = launchImpulse;
 
-    // Apply launch force
-    itemRigidbody.AddForce(relativeLaunchForce, ForceMode2D.Impulse);
+    // Launch it in the facing direction
+    float relativeLaunchAngle = Mathf.Sign(transform.localScale.x) == 1 ? launchAngle : 180 - launchAngle;
+    grabbedItem.LaunchTowards(
+      Quaternion.Euler(0, 0, relativeLaunchAngle) * Vector2.right, directionIsRelative: true
+    );
 
     // Get a random rotation speed (relative to facing direction)
     float launchTorque = Random.Range(launchTorqueMin, launchTorqueMax) * -Mathf.Sign(transform.localScale.x);
@@ -177,7 +180,7 @@ public class PlayerGrab : MonoBehaviour
     itemRigidbody.AddTorque(launchTorque, ForceMode2D.Impulse);
 
     // Make it an active projectile
-    grabbedItem.GetComponent<PlayerProjectile>().active = true;
+    grabbedItem.active = true;
 
     // Put it in the right layer
     grabbedItem.gameObject.layer = LayerMask.NameToLayer("PlayerProjectile");

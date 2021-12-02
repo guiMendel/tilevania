@@ -12,7 +12,7 @@ public class ChaseState : State
   //=== State
 
   // Which target is currently being chased
-  Vector2 currentTarget;
+  Transform currentTarget;
 
   // Whether the character is currently standing still in the heads up interval
   bool inHeadsUp;
@@ -56,7 +56,7 @@ public class ChaseState : State
   private void Chase()
   {
     // Move towards target
-    movementComponent.Move((currentTarget - (Vector2)(transform.position)).normalized);
+    movementComponent.Move((currentTarget.position - transform.position).normalized);
   }
 
   // Waits the configured time and then sets the target for chase
@@ -72,7 +72,7 @@ public class ChaseState : State
 
   //=== Interface
 
-  public void SetTarget(Vector2 target)
+  public void SetTarget(Transform target)
   {
     // Set the target
     currentTarget = target;

@@ -75,10 +75,10 @@ public abstract class Movement : MonoBehaviour
   //=== Interface
 
   // THe magnitude of the direction parameter can be used to modify movement speed
-  public void Move(Vector2 movement)
+  public void Move(Vector2 movement, bool faceMovementDirection = true)
   {
     // Update facing direction
-    UpdateFacingDirection(movement);
+    if (faceMovementDirection && movement != Vector2.zero) UpdateFacingDirection(movement);
 
     // Apply inertia
     frameMovement = ApplyInertia(baseSpeed * movement);

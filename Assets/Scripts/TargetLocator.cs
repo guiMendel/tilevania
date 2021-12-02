@@ -44,10 +44,10 @@ public class TargetLocator : MonoBehaviour
   //=== Events
 
   // Event type
-  [Serializable] public class Vector2Event : UnityEvent<Vector2> { }
+  [Serializable] public class TransformEvent : UnityEvent<Transform> { }
 
   // Target spotted event
-  public Vector2Event OnTargetSpotted;
+  public TransformEvent OnTargetSpotted;
 
   // Target lost event
   public UnityEvent OnTargetLost;
@@ -60,7 +60,7 @@ public class TargetLocator : MonoBehaviour
     GetRefs();
 
     // Init
-    if (OnTargetSpotted == null) OnTargetSpotted = new Vector2Event();
+    if (OnTargetSpotted == null) OnTargetSpotted = new TransformEvent();
     if (OnTargetLost == null) OnTargetLost = new UnityEvent();
   }
 
@@ -123,7 +123,7 @@ public class TargetLocator : MonoBehaviour
     if (targetSpotted)
     {
       // Raise event
-      OnTargetSpotted.Invoke(hit.point);
+      OnTargetSpotted.Invoke(target.transform);
 
       // Register hit
       targetSpottedLastFrame = true;
@@ -147,7 +147,7 @@ public class TargetLocator : MonoBehaviour
     }
 
     // If is currently predicting, only raise the event
-    else if (prediction != null) OnTargetSpotted.Invoke(hit.point);
+    else if (prediction != null) OnTargetSpotted.Invoke(target.transform);
   }
 
   private IEnumerator PredictTargetLocation()

@@ -29,8 +29,6 @@ public abstract class State : MonoBehaviour
   public UnityEvent OnStateEnabled;
   public UnityEvent OnStateDisabled;
 
-  //=== Refs
-  private SharedState _sharedState;
 
   private void Awake()
   {
@@ -38,8 +36,11 @@ public abstract class State : MonoBehaviour
     if (OnStateEnabled == null) OnStateEnabled = new UnityEvent();
     if (OnStateDisabled == null) OnStateDisabled = new UnityEvent();
 
-    // Get refs
-    _sharedState = GetComponent<SharedState>();
+
+    if (GetComponent<SharedState>() == null)
+    {
+      Debug.LogError(gameObject.name + " lacks a Shared State component");
+    }
 
     OnAwake();
   }
@@ -56,7 +57,7 @@ public abstract class State : MonoBehaviour
   {
     // Keep state awareness updated
     wasCurrentState = isCurrentState;
-    isCurrentState = _sharedState.GetState(GetStateKeyName()) == this.GetType().Name;
+    isCurrentState = GetComponent<SharedState>().GetState(GetStateKeyName()) == this.GetType().Name;
 
     // Check if state was disabled this frame
     if (!isCurrentState && wasCurrentState)
@@ -85,9 +86,9 @@ public abstract class State : MonoBehaviour
   {
     // Ignore redundant calls
     if (isCurrentState) return;
-    
+
     // Set state
-    _sharedState.SetState(GetStateKeyName(), this.GetType().Name);
+    GetComponent<SharedState>().SetState(GetStateKeyName(), this.GetType().Name);
     isCurrentState = true;
 
     OnStateEnable();
