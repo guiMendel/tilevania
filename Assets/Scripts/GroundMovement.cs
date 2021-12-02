@@ -14,32 +14,35 @@ public class GroundMovement : Movement
   //=== Params
   [Header("Jumping")]
   [Tooltip("Vertical velocity to add on jump")]
-  [SerializeField] float jumpPower = 10f;
+  public float jumpPower = 10f;
 
   [Tooltip("Which layers will the character be able to jump off of")]
-  [SerializeField] LayerMask groundLayers;
+  public LayerMask groundLayers;
+
+  [Tooltip("The range of the ground check raycast")]
+  public float groundCheckRange = 0.1f;
 
   [Tooltip("The position of the character's feet")]
-  [SerializeField] Transform feet;
+  public Transform feet;
 
   [Tooltip("Whether to change inertia value when airborne")]
-  [SerializeField] bool airborneInertiaEffect = true;
+  public bool airborneInertiaEffect = true;
 
   [Tooltip("Movement inertia when airborne")]
-  [Range(0f, 1f)] [SerializeField] float airborneInertia = 0.7f;
+  [Range(0f, 1f)] public float airborneInertia = 0.7f;
 
   [Header("Climbing")]
   [Tooltip("Climb speed")]
-  [SerializeField] float climbSpeed = 2f;
+  public float climbSpeed = 2f;
 
   [Tooltip("Which layers will the character be able to climb on")]
-  [SerializeField] LayerMask climbableLayers;
+  public LayerMask climbableLayers;
 
   [Tooltip("The speed applied to character as he leaves a climbable object")]
-  [SerializeField] float leaveClimbableImpulse = 5f;
+  public float leaveClimbableImpulse = 5f;
 
   [Tooltip("If this collider isn't in contact with a climbable layer, character won't be able to climb up")]
-  [SerializeField] Collider2D upperClimbBoundCollider;
+  public Collider2D upperClimbBoundCollider;
 
   //=== State
 
@@ -181,11 +184,14 @@ public class GroundMovement : Movement
   {
     if (allowClimbing && IsClimbing()) return true;
 
+    // Where to raycast from
+    Transform raycastOrigin = feet ?? transform;
+
     // Layer mask
     int layerMask = groundLayers & ~(1 << gameObject.layer);
 
     // Cast downwards
-    return Physics2D.Raycast(feet.position, Vector2.down, 0.1f, layerMask).collider != null;
+    return Physics2D.Raycast(raycastOrigin.position, Vector2.down, groundCheckRange, layerMask).collider != null;
   }
 
   // Apply movement to character. The movementModifier param can alter the direction as well as the speed

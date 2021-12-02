@@ -140,7 +140,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4003498937389421678}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.16738093, y: -0.19052029, z: -13.770807}
+  m_LocalPosition: {x: 0.16738093, y: -0.19052029, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8428335305099256057}
@@ -360,11 +360,12 @@ MonoBehaviour:
   moveDurationMax: 2
   idleDurationMin: 1
   idleDurationMax: 5
-  flipDirectionRange: 0.5
+  flipDirectionRange: 1.5
   flipDirectionLayers:
     serializedVersion: 2
     m_Bits: 34880
-  flipDirectionAngleVariation: 90
+  flipDirectionAngleVariation: 0
+  wallCheckFrequency: 0.2
 --- !u!114 &2063874617
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -396,6 +397,7 @@ MonoBehaviour:
   groundLayers:
     serializedVersion: 2
     m_Bits: 64
+  groundCheckRange: 0.1
   feet: {fileID: 1537177963}
   airborneInertiaEffect: 1
   airborneInertia: 1
@@ -429,8 +431,8 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 2063874616}
-          m_TargetAssemblyTypeName: IdleMovementState, Assembly-CSharp
-          m_MethodName: FlipMovementDirection
+          m_TargetAssemblyTypeName: IdleWanderState, Assembly-CSharp
+          m_MethodName: FlipDirection
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -443,7 +445,7 @@ MonoBehaviour:
     OnSensorStay:
       m_PersistentCalls:
         m_Calls: []
-  - sensorCollider: {fileID: 0}
+  - sensorCollider: {fileID: 3114048324951425055}
     layersToSense:
       serializedVersion: 2
       m_Bits: 64
@@ -455,19 +457,7 @@ MonoBehaviour:
         m_Calls: []
     OnSensorStay:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 2063874616}
-          m_TargetAssemblyTypeName: IdleMovementState, Assembly-CSharp
-          m_MethodName: FlipMovementDirection
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+        m_Calls: []
 --- !u!114 &2063874620
 MonoBehaviour:
   m_ObjectHideFlags: 0

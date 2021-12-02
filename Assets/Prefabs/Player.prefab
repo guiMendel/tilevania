@@ -338,7 +338,10 @@ MonoBehaviour:
   groundLayers:
     serializedVersion: 2
     m_Bits: 192
+  groundCheckRange: 0.1
   feet: {fileID: 510504022}
+  airborneInertiaEffect: 1
+  airborneInertia: 0
   climbSpeed: 5
   climbableLayers:
     serializedVersion: 2

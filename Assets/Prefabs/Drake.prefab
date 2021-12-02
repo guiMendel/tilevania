@@ -14,6 +14,13 @@ GameObject:
   - component: {fileID: 4020542983950415575}
   - component: {fileID: 4020542983950415560}
   - component: {fileID: 2179283396596467485}
+  - component: {fileID: 63001228}
+  - component: {fileID: 63001229}
+  - component: {fileID: 63001233}
+  - component: {fileID: 63001234}
+  - component: {fileID: 63001236}
+  - component: {fileID: 63001237}
+  - component: {fileID: 63001240}
   m_Layer: 10
   m_Name: Drake
   m_TagString: Untagged
@@ -114,19 +121,19 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4020542983950415564}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!58 &4020542983950415560
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -155,6 +162,176 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e72cbc164c1549438be82a09104581a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  invertFacingDirection: 0
-  baseSpeed: 5
-  inertia: 0
+  invertFacingDirection: 1
+  baseSpeed: 6
+  inertia: 0.9
+--- !u!114 &63001228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4020542983950415564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bcef50ff17f3421f921787c9860510e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &63001229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4020542983950415564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd3212beb769548a5b78c6a546cda204, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  idleSpeed: 3
+  idleInertia: 0.6
+--- !u!114 &63001233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4020542983950415564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1612194536e87471fbfb5f1ddde957f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startingState: 1
+  stateKey: 
+  OnStateEnabled:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStateDisabled:
+    m_PersistentCalls:
+      m_Calls: []
+  moveDurationMin: 0.5
+  moveDurationMax: 2
+  idleDurationMin: 1
+  idleDurationMax: 5
+  flipDirectionRange: 0.5
+  flipDirectionLayers:
+    serializedVersion: 2
+    m_Bits: 34880
+  flipDirectionAngleVariation: 0
+  wallCheckFrequency: 0.1
+--- !u!114 &63001234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4020542983950415564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bef3d40d261c4fbdbf8d9fee43d8df3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &63001236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4020542983950415564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bce129ecc79c4595bb527f86b49e458, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  invertFacingDirection: 1
+  sightAngle: 85
+  sightRange: 6
+  target: {fileID: 0}
+  blockingLayers:
+    serializedVersion: 2
+    m_Bits: 32832
+  predictionTime: 0.5
+  OnTargetSpotted:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 63001237}
+        m_TargetAssemblyTypeName: ChaseState, Assembly-CSharp
+        m_MethodName: SetTarget
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnTargetLost:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 63001233}
+        m_TargetAssemblyTypeName: State, Assembly-CSharp
+        m_MethodName: Enable
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &63001237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4020542983950415564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96ceecb93027d4ba09453a22552cf5e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startingState: 0
+  stateKey: 
+  OnStateEnabled:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStateDisabled:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 63001233}
+        m_TargetAssemblyTypeName: State, Assembly-CSharp
+        m_MethodName: Enable
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  headsUpDelay: 0.2
+--- !u!114 &63001240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4020542983950415564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0090ca7cb7c7f42b19d10522227d8e10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  threatLayers:
+    serializedVersion: 2
+    m_Bits: 8192
+  deathKick: 10
+  upwardsExtraKick: 5
+  holdPositionAfterDeath: 1
+  kickHeightOffest: 0

@@ -1,13 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 // Deps
-[RequireComponent(typeof(AirborneMovement))]
+[RequireComponent(typeof(Movement))]
 [RequireComponent(typeof(ChaseState))]
 [RequireComponent(typeof(IdleWanderState))]
+[RequireComponent(typeof(Rigidbody2D))]
 
 public class Drake : MonoBehaviour
 {
@@ -18,6 +20,7 @@ public class Drake : MonoBehaviour
   [Tooltip("Multiplier applied to the movement inertia when in idle state")]
   [SerializeField] float idleInertia = 0.2f;
 
+
   //=== State
   // Default value for groundMovement base speed
   float defaultBaseSpeed;
@@ -25,16 +28,19 @@ public class Drake : MonoBehaviour
   // Default value for groundMovement inertia
   float defaultInertia;
 
+
   //=== Refs
-  AirborneMovement _movement;
+  Movement _movement;
   ChaseState _chaseState;
   IdleWanderState _idleWanderState;
+  Rigidbody2D _rigidbody;
 
   private void Awake()
   {
     _movement = GetComponent<AirborneMovement>();
     _chaseState = GetComponent<ChaseState>();
     _idleWanderState = GetComponent<IdleWanderState>();
+    _rigidbody = GetComponent<Rigidbody2D>();
   }
 
   private void Start()
@@ -62,6 +68,7 @@ public class Drake : MonoBehaviour
     });
   }
 
+
   //=== Messages
 
   void OnDeathMessage()
@@ -72,5 +79,21 @@ public class Drake : MonoBehaviour
 
     // Disable threat
     gameObject.layer = LayerMask.NameToLayer("ImmovableObject");
+
+    // Turn gravity back on
+    _rigidbody.gravityScale = 1f;
+
+    GroundMovement movement = gameObject.AddComponent<GroundMovement>();
+    movement.groundLayers = LayerMask.GetMask("Ground", "Breakable");
+    movement.groundCheckRange = 1.5f;
+
+
+    Destroy(_movement);
+    _movement = movement;
   }
+
+
+  //=== Interface
+
+
 }
