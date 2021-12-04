@@ -27,11 +27,13 @@ public abstract class Movement : MonoBehaviour
 
   //=== Refs
   protected Rigidbody2D _rigidbody;
+  protected Collider2D _collider;
 
   private void Awake()
   {
     // Get components
     _rigidbody = GetComponent<Rigidbody2D>();
+    _collider = GetComponent<Collider2D>();
 
     OnAwake();
   }
@@ -40,6 +42,8 @@ public abstract class Movement : MonoBehaviour
   {
     lastFrameMovement = frameMovement;
     frameMovement = Vector2.zero;
+
+    OnLateUpdate();
   }
 
   private void UpdateFacingDirection(Vector2 movement)
@@ -76,6 +80,7 @@ public abstract class Movement : MonoBehaviour
 
   // Hooks
   protected virtual void OnAwake() { }
+  protected virtual void OnLateUpdate() { }
 
 
   //=== Interface

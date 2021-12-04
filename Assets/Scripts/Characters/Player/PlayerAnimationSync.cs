@@ -60,7 +60,8 @@ public class PlayerAnimationSync : MonoBehaviour
     float yMovement = _rigidbody.velocity.y;
 
     // Detect almost stable
-    if (Mathf.Abs(yMovement) <= 0.1f)
+    // If grounded, isn't in the air
+    if (Mathf.Abs(yMovement) <= 0.1f || _groundMovement.IsGrounded())
     {
       setAnimatorParameter(0f);
       return;

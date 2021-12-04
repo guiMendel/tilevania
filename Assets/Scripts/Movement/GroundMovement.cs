@@ -58,6 +58,9 @@ public class GroundMovement : Movement
   // The climb coroutine's move method
   Action<float> ClimbMove;
 
+  // Stores the result of IsGrounded's first call each frame, then gets reset to -1 on the start of the next one
+  int isGroundedCache = -1;
+
 
   protected override void OnAwake()
   {
@@ -71,6 +74,16 @@ public class GroundMovement : Movement
   {
     // Detect airborne
     DetectAirborne();
+
+    // Stick to the ground (prevent sliding down slopes)
+    if (!IsClimbing() && IsGrounded()) _rigidbody.gravityScale = 0f;
+    else _rigidbody.gravityScale = defaultGravityScale;
+  }
+
+  protected override void OnLateUpdate()
+  {
+    // Reset cache
+    isGroundedCache = -1;
   }
 
   private void DetectAirborne()
@@ -182,16 +195,18 @@ public class GroundMovement : Movement
   // Whether the character is standing on a ground layer
   public bool IsGrounded(bool allowClimbing = false)
   {
+    if (isGroundedCache >= 0) return isGroundedCache == 1;
+
     if (allowClimbing && IsClimbing()) return true;
 
-    // Where to raycast from
-    Transform raycastOrigin = feet ?? transform;
+    // Contact filter
+    ContactFilter2D contactFilter2D = new ContactFilter2D().NoFilter();
+    contactFilter2D.SetLayerMask(groundLayers);
 
-    // Layer mask
-    int layerMask = groundLayers & ~(1 << gameObject.layer);
+    isGroundedCache = _collider.Cast(Vector2.down, contactFilter2D, new RaycastHit2D[1], groundCheckRange) > 0 ? 1 : 0;
 
     // Cast downwards
-    return Physics2D.Raycast(raycastOrigin.position, Vector2.down, groundCheckRange, layerMask).collider != null;
+    return isGroundedCache == 1;
   }
 
   // Apply movement to character. The movementModifier param can alter the direction as well as the speed

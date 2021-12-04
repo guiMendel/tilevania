@@ -4939,7 +4939,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   homingTarget: {fileID: 0}
-  homingControl: 0.03
+  homingControl: 0.02
   fixRotationToMovementDirection: 1
 --- !u!58 &7739586463649102771
 CircleCollider2D:
