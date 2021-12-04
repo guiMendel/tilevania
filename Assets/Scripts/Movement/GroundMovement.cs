@@ -244,4 +244,12 @@ public class GroundMovement : Movement
 
   // Checks if is climbing
   public bool IsClimbing() => climbCoroutine != null;
+
+  // Set inertia
+  public override void SeInertia(float newValue)
+  {
+    defaultInertia = newValue;
+
+    base.SeInertia(newValue);
+  }
 }

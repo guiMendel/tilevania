@@ -68,6 +68,12 @@ public abstract class Movement : MonoBehaviour
     return (inertia * currentMovement) + ((1f - inertia) * movement);
   }
 
+  // Sets the inertia
+  public virtual void SeInertia(float newValue)
+  {
+    inertia = newValue;
+  }
+
   // Hooks
   protected virtual void OnAwake() { }
 

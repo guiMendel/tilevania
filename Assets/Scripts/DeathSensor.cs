@@ -84,8 +84,20 @@ public class DeathSensor : MonoBehaviour
     // Rotate direction
     Vector3 direction = Quaternion.Euler(0, 0, 180) * sourceDirection;
 
+    // Get body
+    Rigidbody2D body = GetComponent<Rigidbody2D>();
+
+    // Remove previous velocity
+    body.velocity = Vector2.zero;
+
     // Apply force
-    GetComponent<Rigidbody2D>().AddForce(direction * deathKick + Vector3.up * upwardsExtraKick, ForceMode2D.Impulse);
+    body.AddForce(direction * deathKick + Vector3.up * upwardsExtraKick, ForceMode2D.Impulse);
+
+    // Reduce movement drag
+    Movement movement = GetComponent<Movement>();
+
+    if (movement != null) movement.SeInertia(0.9f);
+
   }
 
   //=== Interface
