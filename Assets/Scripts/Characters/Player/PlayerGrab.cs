@@ -17,8 +17,8 @@ public class PlayerGrab : MonoBehaviour
   [Tooltip("How far the player can grab items from")]
   public float grabRange = 1f;
 
-  [Tooltip("The launch force of throwing an item")]
-  public float launchImpulse = 10f;
+  [Tooltip("The launch velocity of throwing an item")]
+  public float launchVelocity = 10f;
 
   [Tooltip("The launch angle when throwing an item")]
   public float launchAngle = 30;
@@ -165,7 +165,7 @@ public class PlayerGrab : MonoBehaviour
     grabbedItem.transform.parent = null;
 
     // Set it's impulse
-    grabbedItem.launchImpulse = launchImpulse;
+    grabbedItem.launchVelocity = launchVelocity;
 
     // Launch it in the facing direction
     float relativeLaunchAngle = Mathf.Sign(transform.localScale.x) == 1 ? launchAngle : 180 - launchAngle;

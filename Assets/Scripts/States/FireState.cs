@@ -18,6 +18,9 @@ public class FireState : State
   [Tooltip("Position from where to shoot")]
   public Transform launchSource;
 
+  [Tooltip("How accurately it is possible to predict the target/projectile intercept position when target is moving")]
+  [Range(0f, 1f)] public float targetMovementPredictionAccuracy = 0f;
+
   [Header("Moving")]
   [Tooltip("Distance to try to keep from target")]
   public float preferredDistance = 3f;
@@ -94,7 +97,7 @@ public class FireState : State
     projectile.homingTarget = currentTarget;
 
     // Fire!
-    projectile.LaunchTowards(currentTarget.position);
+    projectile.LaunchTowards(currentTarget, targetMovementPredictionAccuracy);
   }
 
   IEnumerator Cooldown()

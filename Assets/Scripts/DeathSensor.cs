@@ -24,6 +24,10 @@ public class DeathSensor : MonoBehaviour
   [Tooltip("Offset center of mass up by this amount when calculating death kick direction")]
   public float kickHeightOffest = 0f;
 
+  [Header("Debug")]
+  [Tooltip("Makes character immortal")]
+  public bool godMode;
+
   //=== State
   bool triggered;
 
@@ -84,18 +88,17 @@ public class DeathSensor : MonoBehaviour
     GetComponent<Rigidbody2D>().AddForce(direction * deathKick + Vector3.up * upwardsExtraKick, ForceMode2D.Impulse);
   }
 
-  private void Die()
-  {
-    // Send message
-    SendMessage("OnDeathMessage");
-  }
-
   //=== Interface
 
   public void GetKilledBy(Transform other)
   {
+    if (godMode) return;
+
     triggered = true;
-    Die();
+
+    // Send message
+    SendMessage("OnDeathMessage");
+
     LaunchAwayFrom(other);
   }
 }

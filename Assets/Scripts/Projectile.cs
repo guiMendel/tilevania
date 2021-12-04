@@ -12,7 +12,7 @@ public class Projectile : MonoBehaviour
 {
   //=== Params
   [Tooltip("Projectile's launch impulse")]
-  public float launchImpulse = 10f;
+  public float launchVelocity = 10f;
 
   [Header("Triggering")]
   [Tooltip("Which layers will the projectile hit")]
@@ -64,7 +64,7 @@ public class Projectile : MonoBehaviour
     // Get target direction
     Vector2 targetDirection = homingTarget.position - transform.position;
 
-    // Get  direction difference, and make it proportional do homing control
+    // Get  direction difference, and make it proportional to homing control
     Vector2 directionDifference = (_rigidbody.velocity.normalized - targetDirection.normalized) * homingControl;
 
     // Get the new direction
@@ -152,7 +152,32 @@ public class Projectile : MonoBehaviour
     if (!directionIsRelative) direction -= (Vector2)transform.position;
 
     // Apply launch force
-    _rigidbody.AddForce(direction * launchImpulse, ForceMode2D.Impulse);
+    _rigidbody.velocity = direction.normalized * launchVelocity;
+
+    // Activate
+    if (activate) active = true;
+  }
+
+  // Launch towards this object, allow for movement prediction
+  public void LaunchTowards(Transform target, float predictionAccuracy = 0f, bool activate = true)
+  {
+    Vector2 direction;
+
+    // Don't bother with accuracy close to 0
+    if (predictionAccuracy > Mathf.Epsilon)
+    {
+      // Predict target movement
+      direction = MovementPrediction.PredictTargetMovement(transform, target, launchVelocity);
+
+      // Lerp with accuracy
+      direction = Vector2.Lerp(
+        (target.position - transform.position).normalized, direction, predictionAccuracy
+      );
+    }
+    else direction = (target.position - transform.position).normalized;
+
+    // Apply launch velocity
+    _rigidbody.velocity = direction.normalized * launchVelocity;
 
     // Activate
     if (activate) active = true;
