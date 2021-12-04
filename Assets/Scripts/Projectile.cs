@@ -41,6 +41,10 @@ public class Projectile : MonoBehaviour
   [Tooltip("Amount of homing control. 0 means no homing, 1 means perfect stirring")]
   [Range(0, 1)] public float homingControl;
 
+  [Header("Misc")]
+  [Tooltip("Whether to constantly adjust rotation to match movement direction")]
+  public bool fixRotationToMovementDirection;
+
 
   //=== Refs
 
@@ -54,6 +58,20 @@ public class Projectile : MonoBehaviour
   private void Update()
   {
     ChaseTarget();
+
+    // Fix rotation
+    AdjustRotation();
+  }
+
+  private void AdjustRotation()
+  {
+    if (!fixRotationToMovementDirection) return;
+
+    // Get movement direction angle
+    float movementAngle = Mathf.Acos(_rigidbody.velocity.normalized.x) * Mathf.Rad2Deg * Mathf.Sign(_rigidbody.velocity.y);
+
+    // Set object rotation
+    transform.rotation = Quaternion.Euler(0, 0, movementAngle);
   }
 
   // Adjust direction to track target
@@ -112,6 +130,15 @@ public class Projectile : MonoBehaviour
       Destroy(particles, eraseTime);
     }
 
+    // If projectile fathers any particle systems, make them independent
+    ParticleSystem particleSystem = GetComponentInChildren<ParticleSystem>();
+    if (particleSystem)
+    {
+      particleSystem.transform.parent = null;
+      particleSystem.Stop();
+      Destroy(particleSystem.gameObject, eraseTime);
+    }
+
     Destroy(gameObject);
   }
 
@@ -125,8 +152,6 @@ public class Projectile : MonoBehaviour
     // For each target hit, get it's death sensor component and trigger it's damage
     foreach (Collider2D enemy in enemiesInRange)
     {
-      print(enemy.gameObject.name);
-
       // Get it's death sensor
       DeathSensor enemyDeathSensor = enemy.GetComponent<DeathSensor>();
 

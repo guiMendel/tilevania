@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,6 +20,7 @@ public static class MovementPrediction
     var (positiveAngle, negativeAngle) = GetPredictionAngles(transform, target, projectileVelocity);
 
     // If target is below, use negative angle. Otherwise, use positive angle
+    Debug.Log((negativeAngle, positiveAngle));
     return Quaternion.Euler(
       0, 0, transform.position.y > target.position.y ? negativeAngle : positiveAngle
     ) * Vector2.right;
