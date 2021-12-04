@@ -4933,7 +4933,7 @@ MonoBehaviour:
     m_Bits: 33088
   active: 1
   breakParticles: {fileID: 0}
-  eraseTime: 0
+  eraseTime: 3
   damageRange: 0.5
   damageLayers:
     serializedVersion: 2

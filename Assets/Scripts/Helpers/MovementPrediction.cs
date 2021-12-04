@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public static class MovementPrediction
 {
@@ -19,8 +20,10 @@ public static class MovementPrediction
     // Get predicted angles
     var (positiveAngle, negativeAngle) = GetPredictionAngles(transform, target, projectileVelocity);
 
+    // If the angles are NaN, prediction isn't possible in this scenario
+    if (Double.IsNaN(positiveAngle)) return (target.position - transform.position).normalized;
+
     // If target is below, use negative angle. Otherwise, use positive angle
-    Debug.Log((negativeAngle, positiveAngle));
     return Quaternion.Euler(
       0, 0, transform.position.y > target.position.y ? negativeAngle : positiveAngle
     ) * Vector2.right;
@@ -30,7 +33,6 @@ public static class MovementPrediction
   {
     // Get target's velocities
     Vector2 targetVelocity = target.GetComponent<Rigidbody2D>().velocity;
-    // Vector2 targetVelocity = new Vector2(-10f, 0f);
     var (vy, vx) = (targetVelocity.y, targetVelocity.x);
 
     // Get xDistance and yDistance
