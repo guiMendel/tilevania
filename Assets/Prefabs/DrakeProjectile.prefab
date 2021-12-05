@@ -4778,8 +4778,8 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1164279781
-  m_SortingLayer: 2
+  m_SortingLayerID: 1570888367
+  m_SortingLayer: 3
   m_SortingOrder: -1
   m_RenderMode: 0
   m_SortMode: 0
@@ -4880,8 +4880,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1164279781
-  m_SortingLayer: 2
+  m_SortingLayerID: 1570888367
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 5353841184698615464, guid: 6efd92c7f6f484a4fb066ca3440a7e80, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -4939,7 +4939,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   homingTarget: {fileID: 0}
-  homingControl: 0.02
+  homingControl: 0.03
   fixRotationToMovementDirection: 1
 --- !u!58 &7739586463649102771
 CircleCollider2D:

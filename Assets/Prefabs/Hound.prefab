@@ -400,7 +400,7 @@ MonoBehaviour:
   groundCheckRange: 0.1
   feet: {fileID: 1537177963}
   airborneInertiaEffect: 1
-  airborneInertia: 1
+  airborneInertia: 0.8
   climbSpeed: 2
   climbableLayers:
     serializedVersion: 2
@@ -574,3 +574,4 @@ MonoBehaviour:
   upwardsExtraKick: 5
   holdPositionAfterDeath: 1
   kickHeightOffest: 1
+  godMode: 0

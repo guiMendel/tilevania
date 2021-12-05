@@ -82,8 +82,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1164279781
-  m_SortingLayer: 2
+  m_SortingLayerID: 1570888367
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 9079002682661804598, guid: 082a33020fe4349858b76a654151f676, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -151,7 +151,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.45
 --- !u!114 &2179283396596467485
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -255,7 +255,7 @@ MonoBehaviour:
   blockingLayers:
     serializedVersion: 2
     m_Bits: 32832
-  predictionTime: 0.5
+  predictionTime: 1.5
   OnTargetSpotted:
     m_PersistentCalls:
       m_Calls:
@@ -326,6 +326,7 @@ MonoBehaviour:
   upwardsExtraKick: 5
   holdPositionAfterDeath: 1
   kickHeightOffest: 0
+  godMode: 0
 --- !u!114 &1849397763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -346,10 +347,11 @@ MonoBehaviour:
   OnStateDisabled:
     m_PersistentCalls:
       m_Calls: []
-  fireCooldown: 3
+  fireCooldown: 2
   projectilePrefab: {fileID: 7739586463649102783, guid: 253b5364f10f640e49d4f5552a46c280, type: 3}
   launchSource: {fileID: 2410600081671514543}
-  preferredDistance: 5
+  targetMovementPredictionAccuracy: 0.9
+  preferredDistance: 4
   moveSpeedMultiplier: 0.3
 --- !u!1 &6867050646282515659
 GameObject:

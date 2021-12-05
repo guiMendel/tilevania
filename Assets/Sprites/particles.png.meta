@@ -17,6 +17,12 @@ TextureImporter:
   - first:
       213: -2924870240721974060
     second: particles_4
+  - first:
+      213: 4816342424261837737
+    second: particles_5
+  - first:
+      213: 6193290335882477365
+    second: particles_6
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -110,20 +116,14 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 32
-        width: 8
-        height: 8
+        y: 0
+        width: 2
+        height: 2
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape:
-      - - {x: -1, y: -1}
-        - {x: -1, y: 1}
-        - {x: 1, y: 1}
-        - {x: 1, y: 0}
-        - {x: 0, y: 0}
-        - {x: 0, y: -1}
+      physicsShape: []
       tessellationDetail: 0
       bones: []
       spriteID: ee4aefbc4eba56690800000000000000
@@ -136,19 +136,15 @@ TextureImporter:
       name: particles_1
       rect:
         serializedVersion: 2
-        x: 0
-        y: 24
-        width: 8
-        height: 8
+        x: 2
+        y: 0
+        width: 2
+        height: 2
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape:
-      - - {x: -1, y: -1}
-        - {x: -1, y: 0}
-        - {x: 2, y: 0}
-        - {x: 2, y: -1}
+      physicsShape: []
       tessellationDetail: 0
       bones: []
       spriteID: 56964a2e3116008f0800000000000000
@@ -161,24 +157,15 @@ TextureImporter:
       name: particles_2
       rect:
         serializedVersion: 2
-        x: 0
-        y: 16
-        width: 8
-        height: 8
+        x: 4
+        y: 0
+        width: 2
+        height: 2
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape:
-      - - {x: 0, y: -2}
-        - {x: 0, y: -1}
-        - {x: 0, y: -1}
-        - {x: -1, y: -1}
-        - {x: -1, y: 1}
-        - {x: 0, y: 1}
-        - {x: 0, y: 0}
-        - {x: 1, y: 0}
-        - {x: 1, y: -2}
+      physicsShape: []
       tessellationDetail: 0
       bones: []
       spriteID: 8759b49c60b8ead40800000000000000
@@ -191,22 +178,15 @@ TextureImporter:
       name: particles_3
       rect:
         serializedVersion: 2
-        x: 0
-        y: 8
-        width: 8
-        height: 8
+        x: 6
+        y: 0
+        width: 2
+        height: 2
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape:
-      - - {x: -1, y: -2}
-        - {x: -1, y: 1}
-        - {x: 0, y: 1}
-        - {x: 1, y: 1}
-        - {x: 1, y: 0}
-        - {x: 0, y: 0}
-        - {x: 0, y: -2}
+      physicsShape: []
       tessellationDetail: 0
       bones: []
       spriteID: dabf4c884c754c9f0800000000000000
@@ -219,27 +199,61 @@ TextureImporter:
       name: particles_4
       rect:
         serializedVersion: 2
-        x: 0
+        x: 8
         y: 0
-        width: 8
-        height: 8
+        width: 2
+        height: 2
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape:
-      - - {x: -2, y: -2}
-        - {x: -2, y: -1}
-        - {x: -1, y: -1}
-        - {x: -1, y: 0}
-        - {x: 1, y: 0}
-        - {x: 1, y: -1}
-        - {x: 2, y: -1}
-        - {x: 2, y: -2}
+      physicsShape: []
       tessellationDetail: 0
       bones: []
       spriteID: 4dcc7af3306c867d0800000000000000
       internalID: -2924870240721974060
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: particles_5
+      rect:
+        serializedVersion: 2
+        x: 10
+        y: 0
+        width: 2
+        height: 2
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9a345c2bae517d240800000000000000
+      internalID: 4816342424261837737
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: particles_6
+      rect:
+        serializedVersion: 2
+        x: 12
+        y: 0
+        width: 2
+        height: 2
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 53f722d3fbcf2f550800000000000000
+      internalID: 6193290335882477365
       vertices: []
       indices: 
       edges: []
